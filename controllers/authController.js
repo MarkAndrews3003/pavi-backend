@@ -1,7 +1,7 @@
-const sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
-const db = require('../models');
-const Users = db.users;
+
+const Users = require('../mongoose/models/users');
+const bcrypt = require('bcryptjs');
 
 const showIfErrors = require('../helpers/showIfErrors');
 
@@ -14,19 +14,8 @@ exports.login = async (req, res) => {
         let data = req.body;
         let email = data.email.trim();
 
-        let attributes = [`first_name`, `last_name`, 'email', 'profile_img', 'password', 'id', 'status_id'];
-
-        // Active status selecting
-        let statusWhere = sequelize.where(sequelize.col('`users_status`.`name_en`'), 'active');
-
-
         // Selecting an employee that has an email matching request one
-        let user = await Users.findOne({
-            attributes: attributes,
-            include: [],
-            where: {email: email} //userTypeWhere
-        }, res);
-
+        let user = await Users.findOne({'email': email});
 
         if (!res.headersSent) {
 
@@ -56,5 +45,16 @@ exports.logout = (req, res) => {
 };
 
 exports.register = (req, res) => {
+    let data = req.hasOwnProperty('userInfo') ? req.userInfo : req.body;
 
+    console.log(data)
+
+    // Saving the original password of user and hashing it to save in db
+    let originalPass = data.password;
+    data.password = bcrypt.hashSync(originalPass, 10);
+
+    console.log(data)
+    let user = new Users(data);
+    user.save();
+    res.json('OK')
 };

@@ -20,7 +20,7 @@ const rules = [
     //     }),
     body().custom(async (req) => {
         let email = req.email;
-
+console.log('here!!!')
         // Retrieving a user with request email
         let user = await Users.findOne({where: {email: email}});
 

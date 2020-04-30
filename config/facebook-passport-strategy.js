@@ -13,6 +13,9 @@ module.exports = (passport) => {
         },
         async (accessToken, refreshToken, profile, cb) => {
             delete profile._json['id'];
+            // console.log(profile._json)
+
+
             let user = await to(Users.findOrCreate({
                     where: {
                         email: profile._json.email
@@ -29,6 +32,8 @@ module.exports = (passport) => {
                     });
                 })
             );
+
+            console.log(user)
             cb(null, user);
         }
     ));
