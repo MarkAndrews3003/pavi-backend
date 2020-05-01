@@ -44,6 +44,21 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/auth', require('./routes/auth'));
 app.use('/companies', require('./routes/companies'));
 
+const path = require('path');
 
+
+let dist = path.join(__dirname, '/dist/');
+
+if (process.env.NODE_ENV === 'production') {
+    dist = path.join(__dirname, '/dist/')
+}
+app.use(express.static(dist));
+
+// Separating Angular routes
+app.get('*', (req, res, next) => {
+    if (!req.url.includes('phpmyadmin')) {
+        res.sendFile(dist + 'index.html');
+    }
+});
 
 
