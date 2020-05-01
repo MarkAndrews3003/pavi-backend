@@ -1,6 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const Users = require('../mongoose/models/users');
+
+const sequelize = require('sequelize');
+const db = require('../models');
+// const Users = require('../mongoose/models/users');
+const Users = db.users;
 const bcrypt = require('bcryptjs');
 
 const showIfErrors = require('../helpers/showIfErrors');
@@ -14,8 +18,20 @@ exports.login = async (req, res) => {
         let data = req.body;
         let email = data.email.trim();
 
+
+        let attributes = [`first_name`, `last_name`, 'email', 'profile_img', 'password', 'id', 'status_id'];
+
+        // Active status selecting
+        let statusWhere = sequelize.where(sequelize.col('`users_status`.`name_en`'), 'active');
+
+
         // Selecting an employee that has an email matching request one
-        let user = await Users.findOne({'email': email});
+        let user = await Users.findOne({
+            attributes: attributes,
+            include: [],
+            where: {email: email} //userTypeWhere
+        }, res);
+
 
         if (!res.headersSent) {
 
@@ -44,7 +60,7 @@ exports.logout = (req, res) => {
     res.status(200).json({msg: 'OK'})
 };
 
-exports.register = (req, res) => {
+exports.register = async (req, res) => {
     let data = req.hasOwnProperty('userInfo') ? req.userInfo : req.body;
 
     console.log(data)
@@ -53,8 +69,18 @@ exports.register = (req, res) => {
     let originalPass = data.password;
     data.password = bcrypt.hashSync(originalPass, 10);
 
+    await Users.create(data);
+
+    // Saving the original password again to request for authenticating the user at once
+    data.password = originalPass;
+    req.body = data;
+
+    // res.json("OK");
+
+    this.login(req, res);
+
     console.log(data)
-    let user = new Users(data);
-    user.save();
-    res.json('OK')
+    // let user = new Users(data);
+    // user.save();
+    // res.json('OK')
 };

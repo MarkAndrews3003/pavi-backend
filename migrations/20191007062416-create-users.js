@@ -38,6 +38,9 @@ module.exports = {
       profile_img: {
         type: Sequelize.STRING
       },
+      access_token: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
