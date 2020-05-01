@@ -65,6 +65,7 @@ if (process.env.NODE_ENV === 'production') {
     console.log('dist works')
     dist = path.join(__dirname, '/dist/')
 }
+console.log(dist)
 app.use(express.static(dist));
 
 // Separating Angular routes
