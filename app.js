@@ -62,6 +62,7 @@ const path = require('path');
 let dist = path.join(__dirname, '/dist/');
 
 if (process.env.NODE_ENV === 'production') {
+    console.log('dist works')
     dist = path.join(__dirname, '/dist/')
 }
 app.use(express.static(dist));
@@ -69,6 +70,7 @@ app.use(express.static(dist));
 // Separating Angular routes
 app.get('*', (req, res, next) => {
     if (!req.url.includes('phpmyadmin')) {
+        console.log('url separation works')
         res.sendFile(dist + 'index.html');
     }
 });
