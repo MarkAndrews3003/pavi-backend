@@ -16,8 +16,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 //Set up default mongoose connection
-const mongoDB = 'mongodb://127.0.0.1/pavi';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+if (process.env.NODE_ENV === 'production') {
+    const mongoDB = 'mongodb://ds121176.mlab.com:21176/heroku_8dzdbvpq';
+    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+} else {
+
+    const mongoDB = 'mongodb://127.0.0.1/pavi';
+    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+}
 
 // Start server on pre-defined port
 server.listen(port, () => {
