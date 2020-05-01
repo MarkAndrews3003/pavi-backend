@@ -17,7 +17,7 @@ const mongoose = require('mongoose');
 
 //Set up default mongoose connection
 if (process.env.NODE_ENV === 'production') {
-    console.log()
+    console.log('connecting to mongo')
     const mongoDB = 'mongodb://heroku_8dzdbvpq:5tupjblv4i4jgqkjh7sbcbnr03@ds121176.mlab.com:21176/heroku_8dzdbvpq';
     mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 } else {
