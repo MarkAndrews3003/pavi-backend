@@ -6,8 +6,7 @@ const authController = require('./authController');
 exports.create = async (req, res) => {
     let data = req.body;
     let companyInfo = {...data.companyInfo, ...data.contactDetails};
-    let userInfo = data.accountInfo;
-    console.log('here')
+    let userInfo = {...data.accountInfo, ...{email: data.contactDetails.email}};
 
     await Companies.create(companyInfo);
     // let company = new Companies(companyInfo);
@@ -15,4 +14,4 @@ exports.create = async (req, res) => {
 
     await authController.register({userInfo}, res);
 
-};
+}
