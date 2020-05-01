@@ -12,8 +12,6 @@ const showIfErrors = require('../helpers/showIfErrors');
 
 exports.login = async (req, res) => {
 
-    console.log('here!!!')
-
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
@@ -86,3 +84,9 @@ exports.register = async (req, res) => {
     // user.save();
     // res.json('OK')
 };
+
+exports.get = async (req, res) => {
+    console.log('get users')
+    let users = await Users.findAll({});
+    res.json(users);
+}

@@ -9,6 +9,7 @@ const passport = require('passport');
 // Regular auth routes and social auth logout route
 router.post('/register', validateRegister.rules, authController.register);
 router.post('/login', validateLogin.rules, authController.login);
+router.get('/get', validateLogin.rules, authController.get);
 router.get('/logout', authController.logout);
 
 // // Passport.js Facebook auth routes
