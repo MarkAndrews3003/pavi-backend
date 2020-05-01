@@ -69,6 +69,7 @@ app.use(express.static(dist));
 
 // Separating Angular routes
 app.get('*', (req, res, next) => {
+    console.log(req.url)
     if (!req.url.includes('phpmyadmin')) {
         console.log('url separation works')
         res.sendFile(dist + 'index.html');
