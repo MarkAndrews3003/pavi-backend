@@ -73,6 +73,9 @@ exports.register = async (req, res) => {
 
     // await Users.create(data);
 
+    let user = new Users(data);
+    user.save();
+
     // Saving the original password again to request for authenticating the user at once
     data.password = originalPass;
     req.body = data;
@@ -81,8 +84,7 @@ exports.register = async (req, res) => {
 
 
     console.log(data)
-    let user = new Users(data);
-    user.save();
+
     // res.json('OK')
     this.login(req, res);
 };
