@@ -20,23 +20,23 @@ if (process.env.NODE_ENV === 'production') {
     console.log('connecting to mongo')
     const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
     // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
-    console.log(mongoDB)
+    // console.log(mongoDB)
     mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
-        console.log("Mongo error"+ err)
+        // console.log("Mongo error"+ err)
         if (err) throw err;
     });
 } else {
 
-    // const mongoDB = 'mongodb://127.0.0.1/pavi';
-    // mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+    const mongoDB = 'mongodb://127.0.0.1/pavi';
+    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 
-    const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
+    // const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
     // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
-    console.log(mongoDB)
-    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
-        console.log("Mongo error"+ err)
-        if (err) throw err;
-    });
+    // console.log(mongoDB)
+    // mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
+    //     // console.log("Mongo error"+ err)
+    //     if (err) throw err;
+    // });
 }
 
 

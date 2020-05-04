@@ -18,7 +18,6 @@ const rules = [
         // let found = await Users.findOne({where: {email: email}});
         console.log('validating login')
         let found = await Users.findOne({email: email});
-        console.log(found)
         if (!found) throw new Error('A user with such email doesn\'t exist');
         if (found.password) {
             console.log('found')
