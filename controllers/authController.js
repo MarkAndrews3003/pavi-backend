@@ -11,7 +11,7 @@ const showIfErrors = require('../helpers/showIfErrors');
 
 
 exports.login = async (req, res) => {
-console.log('login')
+    console.log('login')
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
@@ -33,8 +33,8 @@ console.log('login')
         // }, res);
 
         let user = await Users.findOne({'email': email});
-
-
+        console.log(email)
+        console.log(user)
         if (!res.headersSent) {
 
 
@@ -80,12 +80,6 @@ exports.register = async (req, res) => {
     data.password = originalPass;
     req.body = data;
 
-    // res.json("OK");
-
-
-    console.log(data)
-
-    // res.json('OK')
     this.login(req, res);
 };
 
