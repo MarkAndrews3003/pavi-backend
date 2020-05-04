@@ -1,17 +1,18 @@
-const db = require('../models');
-// const Users = require('../mongoose/models/users');
-const Companies = db.companies;
+const Companies = require('../mongoose/models/companies');
 
 const authController = require('./authController');
+const showIfErrors = require('../helpers/showIfErrors');
+
 exports.create = async (req, res) => {
-    let data = req.body;
-    let companyInfo = {...data.companyInfo, ...data.contactDetails};
-    let userInfo = {...data.accountInfo, ...{email: data.contactDetails.email}};
+    if (!showIfErrors(req, res)) {
+        let data = req.body;
+        let companyInfo = {...data.companyInfo, ...data.contactDetails};
+        let userInfo = {...data.accountInfo, ...{email: data.contactDetails.email}};
 
-    await Companies.create(companyInfo);
-    // let company = new Companies(companyInfo);
-    // await company.save();
+        let company = new Companies(companyInfo);
+        await company.save();
+        await authController.register({userInfo}, res);
+    }
 
-    await authController.register({userInfo}, res);
 
-}
+};

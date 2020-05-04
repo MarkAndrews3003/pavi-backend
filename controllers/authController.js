@@ -11,7 +11,7 @@ const showIfErrors = require('../helpers/showIfErrors');
 
 
 exports.login = async (req, res) => {
-    console.log('login')
+
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
