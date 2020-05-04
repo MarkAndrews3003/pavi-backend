@@ -3,15 +3,15 @@ const jwt = require('jsonwebtoken');
 
 const sequelize = require('sequelize');
 const db = require('../models');
-// const Users = require('../mongoose/models/users');
-const Users = db.users;
+const Users = require('../mongoose/models/users');
+// const Users = db.users;
 const bcrypt = require('bcryptjs');
 
 const showIfErrors = require('../helpers/showIfErrors');
 
 
 exports.login = async (req, res) => {
-
+console.log('login')
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
@@ -25,12 +25,14 @@ exports.login = async (req, res) => {
         let statusWhere = sequelize.where(sequelize.col('`users_status`.`name_en`'), 'active');
 
 
-        // Selecting an employee that has an email matching request one
-        let user = await Users.findOne({
-            attributes: attributes,
-            include: [],
-            where: {email: email} //userTypeWhere
-        }, res);
+        // // Selecting an employee that has an email matching request one
+        // let user = await Users.findOne({
+        //     attributes: attributes,
+        //     include: [],
+        //     where: {email: email} //userTypeWhere
+        // }, res);
+
+        let user = await Users.findOne({'email': email});
 
 
         if (!res.headersSent) {
@@ -69,7 +71,7 @@ exports.register = async (req, res) => {
     let originalPass = data.password;
     data.password = bcrypt.hashSync(originalPass, 10);
 
-    await Users.create(data);
+    // await Users.create(data);
 
     // Saving the original password again to request for authenticating the user at once
     data.password = originalPass;
@@ -77,12 +79,12 @@ exports.register = async (req, res) => {
 
     // res.json("OK");
 
-    this.login(req, res);
 
     console.log(data)
-    // let user = new Users(data);
-    // user.save();
+    let user = new Users(data);
+    user.save();
     // res.json('OK')
+    this.login(req, res);
 };
 
 exports.get = async (req, res) => {

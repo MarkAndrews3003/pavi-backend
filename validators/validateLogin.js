@@ -1,8 +1,8 @@
 // Express Validator
 const {body} = require('express-validator');
 const db = require('../models');
-// const Users = require('../mongoose/models/users');
-const Users = db.users;
+const Users = require('../mongoose/models/users');
+// const Users = db.users;
 const bcrypt = require('bcryptjs');
 
 const rules = [
@@ -15,7 +15,10 @@ const rules = [
 
 
         // Checking email existence & passwords match
-        let found = await Users.findOne({where: {email: email}});
+        // let found = await Users.findOne({where: {email: email}});
+        console.log('validating login')
+        let found = await Users.findOne({email: email});
+        console.log(found)
         if (!found) throw new Error('A user with such email doesn\'t exist');
         if (found.password) {
             console.log('found')

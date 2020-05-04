@@ -15,21 +15,30 @@ const bodyParser = require('body-parser');
 //Import the mongoose module
 const mongoose = require('mongoose');
 
-//Set up default mongoose connectionif (process.env.NODE_ENV === 'production') {
-// //     console.log('connecting to mongo')
-// //     // const mongoDB = 'mongodb://heroku_8dzdbvpq:5tupjblv4i4jgqkjh7sbcbnr03@ds121176.mlab.com:21176/heroku_8dzdbvpq';
-// //     const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
-// //     console.log(mongoDB)
-// //     mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
-// //         console.log(err)
-// //         if (err) throw err;
-// //     });
-// // } else {
-// //
-// //     const mongoDB = 'mongodb://127.0.0.1/pavi';
-// //     mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
-// // }
-//
+//Set up default mongoose connection
+if (process.env.NODE_ENV === 'production') {
+    console.log('connecting to mongo')
+    const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
+    // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
+    console.log(mongoDB)
+    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
+        console.log("Mongo error"+ err)
+        if (err) throw err;
+    });
+} else {
+
+    // const mongoDB = 'mongodb://127.0.0.1/pavi';
+    // mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+
+    const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
+    // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
+    console.log(mongoDB)
+    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
+        console.log("Mongo error"+ err)
+        if (err) throw err;
+    });
+}
+
 
 // Start server on pre-defined port
 server.listen(port, () => {
@@ -65,14 +74,11 @@ if (process.env.NODE_ENV === 'production') {
     console.log('dist works')
     dist = path.join(__dirname, '/dist/')
 }
-console.log(dist)
 app.use(express.static(dist));
 
 // Separating Angular routes
 app.get('*', (req, res, next) => {
-    console.log(req.url)
     if (!req.url.includes('phpmyadmin')) {
-        console.log('url separation works')
         res.sendFile(dist + 'index.html');
     }
 });
