@@ -63,7 +63,13 @@ exports.logout = (req, res) => {
 };
 
 exports.register = async (req, res) => {
-    let data = req.hasOwnProperty('userInfo') ? req.userInfo : req.body;
+    let data = req.body;
+    data.roles = ['candidate'];
+    let isCompanyReg = req.hasOwnProperty('userInfo');
+    if (isCompanyReg) {
+        data = req.userInfo;
+        data.roles = ['company_user'];
+    }
 
     console.log(data)
 
@@ -75,6 +81,7 @@ exports.register = async (req, res) => {
 
     let user = new Users(data);
     await user.save();
+
 
     // Saving the original password again to request for authenticating the user at once
     data.password = originalPass;

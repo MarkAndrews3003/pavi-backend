@@ -6,6 +6,9 @@ let UsersSchema = new mongoose.Schema({
     first_name: {type: String},
     last_name: {type: String},
     email: {type: String},
+    roles: [{
+        type: String
+    }],
     phone: {type: String},
     password: {type: String},
     status: {
