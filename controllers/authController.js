@@ -63,15 +63,16 @@ exports.logout = (req, res) => {
 };
 
 exports.register = async (req, res) => {
-    let data = req.body;
-    data.roles = ['candidate'];
+    let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
     if (isCompanyReg) {
         data = req.userInfo;
         data.roles = ['company_user'];
+    } else {
+        data = req.body;
+        data.roles = ['candidate'];
     }
 
-    console.log(data)
 
     // Saving the original password of user and hashing it to save in db
     let originalPass = data.password;
