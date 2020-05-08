@@ -54,11 +54,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 
-// Passport.js config
-// const passport = require('passport');
-// require('./config/google-passport-strategy')(passport);
-// require('./config/facebook-passport-strategy')(passport);
-// app.use(passport.initialize({}));
+//Passport.js config
+const passport = require('passport');
+require('./config/google-passport-strategy')(passport);
+require('./config/facebook-passport-strategy')(passport);
+require('./config/twitter-passport-strategy')(passport);
+app.use(passport.initialize({}));
+
+const session = require('express-session')
+app.use(session({
+    secret: 'cat',
+    resave: false,
+    saveUninitialized: true
+}));
 
 
 // Routes

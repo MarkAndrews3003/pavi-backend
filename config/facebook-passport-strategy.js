@@ -1,6 +1,5 @@
 const to = require('../helpers/getPromiseResult');
-const db = require('../models');
-const Users = db.users;
+const Users = require('../mongoose/models/users');
 const FacebookStrategy = require('passport-facebook').Strategy;
 
 // Strategy config
