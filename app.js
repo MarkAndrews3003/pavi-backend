@@ -12,6 +12,14 @@ app.use(cors(require('./config/cors')));
 // Body parser
 const bodyParser = require('body-parser');
 
+// Cookie parser
+const cookie_parser = require('cookie-parser');
+app.use(cookie_parser());
+
+//File Upload
+const express_fileupload = require('express-fileupload');
+app.use(express_fileupload());
+
 //Import the mongoose module
 const mongoose = require('mongoose');
 
@@ -21,14 +29,21 @@ if (process.env.NODE_ENV === 'production') {
     const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
     // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
     // console.log(mongoDB)
-    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
+    mongoose.connect(mongoDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }, function (err) {
         // console.log("Mongo error"+ err)
         if (err) throw err;
     });
 } else {
 
-    const mongoDB = 'mongodb://127.0.0.1/pavi';
-    mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+    console.log('Localhost');
+    const mongoDB = 'mongodb://localhost:27017/pavi';
+    mongoose.connect(mongoDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
 
     // const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
     // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
@@ -51,7 +66,9 @@ require('dotenv').config();
 
 // Body-parser
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 
 //Passport.js config
@@ -73,6 +90,9 @@ app.use(session({
 app.use('/auth', require('./routes/auth'));
 app.use('/companies', require('./routes/companies'));
 
+//New Route
+app.use('/user_config', require('./routes/change_user_data'));
+
 const path = require('path');
 
 
@@ -90,5 +110,3 @@ app.get('*', (req, res, next) => {
         res.sendFile(dist + 'index.html');
     }
 });
-
-

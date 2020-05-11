@@ -11,7 +11,6 @@ const showIfErrors = require('../helpers/showIfErrors');
 
 
 exports.login = async (req, res) => {
-
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
@@ -32,37 +31,56 @@ exports.login = async (req, res) => {
         //     where: {email: email} //userTypeWhere
         // }, res);
 
-        let user = await Users.findOne({'email': email});
+        let user = await Users.findOne({
+            'email': email
+        });
         console.log(email)
         console.log(user)
         if (!res.headersSent) {
 
 
             // User is not active
-            if (!user) res.status(500).json({msg: 'You don\'t have such privileges or the account is inactive'});
+            if (!user) res.status(500).json({
+                msg: 'You don\'t have such privileges or the account is inactive'
+            });
 
             else {
                 // Cloning users object without password and saving user full name
-                let {password, ...details} = user.toJSON();
+                let {
+                    password,
+                    ...details
+                } = user.toJSON();
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
+                // res.cookie('token', jwt.sign(details, 'secretkey', {
+                //     expiresIn: '8h'
+                // }));
+
                 res.status(200).json({
-                    token: jwt.sign(details, 'secretkey', {expiresIn: '8h'}), user_id: user.id, full_name: full_name
+                    token: jwt.sign(details, 'secretkey', {
+                        expiresIn: '8h'
+                    }),
+                    user_id: user.id,
+                    full_name: full_name
                 })
             }
 
 
         }
     }
+
 };
 
 exports.logout = (req, res) => {
     req.logout();
-    res.status(200).json({msg: 'OK'})
+    res.status(200).json({
+        msg: 'OK'
+    })
 };
 
 exports.register = async (req, res) => {
+
     let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
     if (isCompanyReg) {
