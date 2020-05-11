@@ -25,7 +25,6 @@ let UsersSchema = new mongoose.Schema({
         type: String,
         default: false
     },
-
     created: {
         type: Date,
         default: moment().format()
@@ -37,8 +36,8 @@ let UsersSchema = new mongoose.Schema({
         type: String
     },
 
-    avatar_name:{
-        type:String,
+    avatar_name: {
+        type: String,
     }
 });
 
