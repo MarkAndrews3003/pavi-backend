@@ -7,7 +7,7 @@ const Users = require('../mongoose/models/users');
 // const Users = db.users;
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
-const twilio = require('twilio')(process.env.Twilio_AccountSid, process.env.Twilio_AuthToken);
+const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 
 const showIfErrors = require('../helpers/showIfErrors');
