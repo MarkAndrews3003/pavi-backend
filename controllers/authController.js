@@ -112,26 +112,21 @@ exports.register = async (req, res) => {
     this.login(req, res);
 };
 
-exports.get = async (req, res) => {
-    console.log('get users')
-    let users = await Users.findAll({});
-    res.json(users);
 
-
-    let makeid = (length) => {
-        let result = '';
-        let characters = '0123456789';
-        let charactersLength = characters.length;
-        for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
+let makeid = (length) => {
+    let result = '';
+    let characters = '0123456789';
+    let charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
+    return result;
 }
+
 exports.forGotPasswordSendEmail = async (req, res) => {
     let user = await Users.findOne({
-            email: req.params.id
-        })
+        email: req.params.id
+    })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -162,10 +157,10 @@ exports.forGotPasswordSendEmail = async (req, res) => {
             return res.status(500).send('mail no send')
         });
     let userUpdate = await Users.updateOne({
-            email: req.params.id
-        }, {
-            code: code
-        })
+        email: req.params.id
+    }, {
+        code: code
+    })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -175,8 +170,8 @@ exports.forGotPasswordSendEmail = async (req, res) => {
 
 exports.forGotSms = async (req, res) => {
     let user = await Users.findOne({
-            email: req.body.email
-        })
+        email: req.body.email
+    })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -187,16 +182,16 @@ exports.forGotSms = async (req, res) => {
     let code = makeid(5)
 
     twilio.messages.create({
-            body: `Your code is ${code}`,
-            from: '+12057840405',
-            to: phone
-        })
+        body: `Your code is ${code}`,
+        from: '+12057840405',
+        to: phone
+    })
         .then(async phone => {
             let userUpdate = await Users.updateOne({
-                    email: req.params.id
-                }, {
-                    code: code
-                })
+                email: req.params.id
+            }, {
+                code: code
+            })
                 .catch(err => {
                     return res.status(500).send('Server Error')
                 })
@@ -210,8 +205,8 @@ exports.forGotSms = async (req, res) => {
 
 exports.forGotPassword = async (req, res) => {
     let user = await Users.findOne({
-            email: req.body.email
-        })
+        email: req.body.email
+    })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
