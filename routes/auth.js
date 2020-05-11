@@ -10,6 +10,9 @@ const passport = require('passport');
 router.post('/register', validateRegister.rules, authController.register);
 router.post('/login', validateLogin.rules, authController.login);
 router.get('/get', validateLogin.rules, authController.get);
+router.get('/forgot/password/email/:id', authController.forGotPasswordSendEmail);
+router.post('/forgot/password/sms', authController.forGotSms);
+router.post('/forgot/password', authController.forGotPassword);
 router.get('/logout', authController.logout);
 
 // Passport.js Google auth routes
