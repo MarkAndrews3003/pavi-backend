@@ -6,6 +6,9 @@ const db = require('../models');
 const Users = require('../mongoose/models/users');
 // const Users = db.users;
 const bcrypt = require('bcryptjs');
+const nodemailer = require("nodemailer");
+const twilio = require('twilio')(process.env.Twilio_AccountSid, process.env.Twilio_AuthToken);
+
 
 const showIfErrors = require('../helpers/showIfErrors');
 
@@ -95,4 +98,99 @@ exports.get = async (req, res) => {
     console.log('get users')
     let users = await Users.findAll({});
     res.json(users);
+}
+
+let makeid = (length) => {
+    let result = '';
+    let characters = '0123456789';
+    let charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+exports.forGotPasswordSendEmail = async (req, res) => {
+    let user = await Users.findOne({email: req.params.id})
+        .catch(err => {
+            return res.status(500).send('Server Error')
+        })
+    if (!user) {
+        return res.status(404).send('There is no such user')
+    }
+    let code = makeid(5)
+    let main = async () => {
+        let transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.Gmail_Login,
+                pass: process.env.Gmail_Password
+            }
+        });
+
+        let info = await transporter.sendMail({
+            from: process.env.Gmail_Forgot,
+            to: `${req.body.email}`,
+            subject: "Forgot",
+            text: "Forgot password",
+            html: `<p>http://localhost:4242/forgot/password/email. Yor code: ${code}</p>`
+        });
+    }
+
+    main()
+        .catch(err => {
+            return res.status(500).send('mail no send')
+        });
+    let userUpdate = await Users.updateOne({email: req.params.id}, {code: code})
+        .catch(err => {
+            return res.status(500).send('Server Error')
+        })
+    res.send()
+}
+
+
+exports.forGotSms = async (req, res) => {
+    let user = await Users.findOne({email: req.body.email})
+        .catch(err => {
+            return res.status(500).send('Server Error')
+        })
+    if (!user) {
+        return res.status(404).send('There is no such user')
+    }
+    let phone = req.body.phone;
+    let code = makeid(5)
+
+    twilio.messages.create({
+        body: `Your code is ${code}`,
+        from: '+12057840405',
+        to: phone
+    })
+        .then(async phone => {
+            let userUpdate = await Users.updateOne({email: req.params.id}, {code: code})
+                .catch(err => {
+                    return res.status(500).send('Server Error')
+                })
+            res.send('Code send')
+        })
+        .catch(err => {
+            res.status(500).send(err)
+            console.log(err);
+        })
+}
+
+exports.forGotPassword = async (req, res) => {
+    let user = await Users.findOne({email: req.body.email})
+        .catch(err => {
+            return res.status(500).send('Server Error')
+        })
+    if (!user) {
+        return res.status(404).send('There is no such user')
+    }
+    if (req.body.code === user.code) {
+        let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        let userUpdate = await Users.updateOne({emil: req.body.email}, {password: hashedPassword})
+        res.send('Password changes')
+    } else {
+        res.status(404).send('Incorrect code')
+    }
 }

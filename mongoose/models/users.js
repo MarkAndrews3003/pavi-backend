@@ -15,7 +15,6 @@ let UsersSchema = new mongoose.Schema({
         type: String,
         default: false
     },
-
     created: {
         type: Date,
         default: moment().format()
