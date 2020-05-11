@@ -14,7 +14,6 @@ const showIfErrors = require('../helpers/showIfErrors');
 
 
 exports.login = async (req, res) => {
-
     // Checking validation result from express-validator
     if (!showIfErrors(req, res)) {
         // Getting request data and setting user fields to return
@@ -35,37 +34,56 @@ exports.login = async (req, res) => {
         //     where: {email: email} //userTypeWhere
         // }, res);
 
-        let user = await Users.findOne({'email': email});
+        let user = await Users.findOne({
+            'email': email
+        });
         console.log(email)
         console.log(user)
         if (!res.headersSent) {
 
 
             // User is not active
-            if (!user) res.status(500).json({msg: 'You don\'t have such privileges or the account is inactive'});
+            if (!user) res.status(500).json({
+                msg: 'You don\'t have such privileges or the account is inactive'
+            });
 
             else {
                 // Cloning users object without password and saving user full name
-                let {password, ...details} = user.toJSON();
+                let {
+                    password,
+                    ...details
+                } = user.toJSON();
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
+                // res.cookie('token', jwt.sign(details, 'secretkey', {
+                //     expiresIn: '8h'
+                // }));
+
                 res.status(200).json({
-                    token: jwt.sign(details, 'secretkey', {expiresIn: '8h'}), user_id: user.id, full_name: full_name
+                    token: jwt.sign(details, 'secretkey', {
+                        expiresIn: '8h'
+                    }),
+                    user_id: user.id,
+                    full_name: full_name
                 })
             }
 
 
         }
     }
+
 };
 
 exports.logout = (req, res) => {
     req.logout();
-    res.status(200).json({msg: 'OK'})
+    res.status(200).json({
+        msg: 'OK'
+    })
 };
 
 exports.register = async (req, res) => {
+
     let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
     if (isCompanyReg) {
@@ -98,20 +116,22 @@ exports.get = async (req, res) => {
     console.log('get users')
     let users = await Users.findAll({});
     res.json(users);
-}
 
-let makeid = (length) => {
-    let result = '';
-    let characters = '0123456789';
-    let charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+
+    let makeid = (length) => {
+        let result = '';
+        let characters = '0123456789';
+        let charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
     }
-    return result;
 }
-
 exports.forGotPasswordSendEmail = async (req, res) => {
-    let user = await Users.findOne({email: req.params.id})
+    let user = await Users.findOne({
+            email: req.params.id
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -141,7 +161,11 @@ exports.forGotPasswordSendEmail = async (req, res) => {
         .catch(err => {
             return res.status(500).send('mail no send')
         });
-    let userUpdate = await Users.updateOne({email: req.params.id}, {code: code})
+    let userUpdate = await Users.updateOne({
+            email: req.params.id
+        }, {
+            code: code
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -150,7 +174,9 @@ exports.forGotPasswordSendEmail = async (req, res) => {
 
 
 exports.forGotSms = async (req, res) => {
-    let user = await Users.findOne({email: req.body.email})
+    let user = await Users.findOne({
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -161,12 +187,16 @@ exports.forGotSms = async (req, res) => {
     let code = makeid(5)
 
     twilio.messages.create({
-        body: `Your code is ${code}`,
-        from: '+12057840405',
-        to: phone
-    })
+            body: `Your code is ${code}`,
+            from: '+12057840405',
+            to: phone
+        })
         .then(async phone => {
-            let userUpdate = await Users.updateOne({email: req.params.id}, {code: code})
+            let userUpdate = await Users.updateOne({
+                    email: req.params.id
+                }, {
+                    code: code
+                })
                 .catch(err => {
                     return res.status(500).send('Server Error')
                 })
@@ -179,7 +209,9 @@ exports.forGotSms = async (req, res) => {
 }
 
 exports.forGotPassword = async (req, res) => {
-    let user = await Users.findOne({email: req.body.email})
+    let user = await Users.findOne({
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -188,7 +220,11 @@ exports.forGotPassword = async (req, res) => {
     }
     if (req.body.code === user.code) {
         let hashedPassword = bcrypt.hashSync(req.body.password, 10);
-        let userUpdate = await Users.updateOne({emil: req.body.email}, {password: hashedPassword})
+        let userUpdate = await Users.updateOne({
+            emil: req.body.email
+        }, {
+            password: hashedPassword
+        })
         res.send('Password changes')
     } else {
         res.status(404).send('Incorrect code')
