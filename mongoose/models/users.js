@@ -30,15 +30,14 @@ let UsersSchema = new mongoose.Schema({
         default: moment().format()
     },
 
-    ////New field
+    ////New fields
 
-    profile_desc: {
-        type: String
-    },
+    profile_desc: String,
+    phone: String,
+    age: Number,
+    country: String,
+    gender: String
 
-    avatar_name: {
-        type: String,
-    }
 });
 
 module.exports = mongoose.model('Users', UsersSchema);

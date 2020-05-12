@@ -1,6 +1,6 @@
 let originsWhitelist = [
     'http://localhost:4200',
-    'http://localhost:4201',
+    'http://localhost:4201'
 ];
 let corsOptions = {
     origin: function (origin, callback) {
