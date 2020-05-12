@@ -12,14 +12,6 @@ app.use(cors(require('./config/cors')));
 // Body parser
 const bodyParser = require('body-parser');
 
-// Cookie parser
-const cookie_parser = require('cookie-parser');
-app.use(cookie_parser());
-
-//File Upload
-const express_fileupload = require('express-fileupload');
-app.use(express_fileupload());
-
 //Import the mongoose module
 const mongoose = require('mongoose');
 
