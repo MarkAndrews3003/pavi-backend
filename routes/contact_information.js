@@ -12,7 +12,9 @@ route.post('/change_description', require('../controllers/contact_informationCon
 ///Fields: phone,age,coutry and gender
 route.post('/change_PACG', require('../controllers/contact_informationController').change_PACG);
 
+//CV
 
+route.post('/CV_E', require('../controllers/contact_informationController').CV_education);
 
 
 module.exports = route;

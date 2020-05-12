@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../mongoose/models/users');
-
+const CV = require('../mongoose/models/CV_Portfolio');
 const bcrypt = require('bcryptjs');
 
 exports.change_pass = async (req, res) => {
@@ -49,7 +49,6 @@ exports.change_email = async (req, res) => {
 }
 
 exports.change_description = async (req, res) => {
-    console.log(req.cookies);
     jwt.verify(req.cookies.token, 'secretkey', function (err, decoded) {
         if (err) throw err;
         if (decoded) {
@@ -82,4 +81,46 @@ exports.change_PACG = async (req, res) => {
             })
         }
     })
+}
+
+
+exports.CV_education = async (req, res) => {
+    console.log(req.body);
+    jwt.verify(req.cookies.token, 'secretkey', function (err, decoded) {
+        if (err) throw err;
+        if (decoded) {
+            console.log(decoded._id);
+            // CV.findOne({
+            //     user_id: decoded._id
+            // }, function (err, res) {
+            //     console.log(res);
+            // })
+            // CV.findOneAndUpdate({
+            //     user_id: decoded._id
+            // }, {
+
+            //     education: {
+            //         institution: 'NPUA'
+            //     },
+
+            //     // $push: {
+            //     //     education: {
+            //     //         req.body
+            //     //         // institution: req.body.institution,
+            //     //         // start_date: req.body.start_date,
+            //     //         // end_date: req.body.end_date,
+            //     //         // degree: req.body.degree,
+            //     //         // speciality: req.body.speciality
+            //     //     },
+            //     // }
+            // }, function (err, user_result) {
+            //     console.log(err);
+            //     console.log(user_result);
+            //     if (user_result != null) res.json({
+            //         result: "Information about education successfully changed"
+            //     })
+            // })
+        }
+    })
+
 }
