@@ -12,6 +12,8 @@ app.use(cors(require('./config/cors')));
 // Body parser
 const bodyParser = require('body-parser');
 
+
+
 //Import the mongoose module
 const mongoose = require('mongoose');
 

@@ -5,12 +5,16 @@ const validateRegister = require('../validators/validateRegister');
 const validateLogin = require('../validators/validateLogin');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const upload = require('../config/multer')
+
+
 
 // Regular auth routes and social auth logout route
 router.post('/register', validateRegister.rules, authController.register);
 router.post('/login', validateLogin.rules, authController.login);
-router.get('/get', validateLogin.rules, authController.get);
 router.get('/forgot/password/email/:id', authController.forGotPasswordSendEmail);
+router.post('/upload/avatar', upload.uploadAvatar.single('avatar'), authController.uploadAvatar);
+router.post('/upload/cover', upload.uploadCover.single('cover'), authController.uploadCover);
 router.post('/forgot/password/sms', authController.forGotSms);
 router.post('/forgot/password', authController.forGotPassword);
 router.get('/logout', authController.logout);
