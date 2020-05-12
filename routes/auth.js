@@ -9,7 +9,7 @@ const passport = require('passport');
 // Regular auth routes and social auth logout route
 router.post('/register', validateRegister.rules, authController.register);
 router.post('/login', validateLogin.rules, authController.login);
-router.get('/get', validateLogin.rules, authController.get);
+// router.get('/get', validateLogin.rules, authController.get);
 router.get('/forgot/password/email/:id', authController.forGotPasswordSendEmail);
 router.post('/forgot/password/sms', authController.forGotSms);
 router.post('/forgot/password', authController.forGotPassword);

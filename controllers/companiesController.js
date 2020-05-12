@@ -16,3 +16,16 @@ exports.create = async (req, res) => {
 
 
 };
+
+/**
+ * Checks to see if the provided name exists in database
+ * @param req
+ * @param res
+ * @returns {Promise<void>}
+ */
+exports.checkName = async (req, res) => {
+    let data = req.query;
+    let foundCompany = await Companies.findOne({name: data.name});
+    if (foundCompany) res.status(500).json({company_name_exists: 'Company with such name exists'});
+    else res.json('OK');
+};
