@@ -4,6 +4,9 @@
   "scripts": {
     "start": "nodemon app.js"
   },
+  "engines": {
+    "node": "12.16.x"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
