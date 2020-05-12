@@ -35,10 +35,12 @@ let UsersSchema = new mongoose.Schema({
     profile_desc: {
         type: String
     },
-
-    avatar_name: {
+    avatar: {
         type: String,
-    }
+    },
+    cover: {
+        type: String,
+    },
 });
 
 module.exports = mongoose.model('Users', UsersSchema);
