@@ -32,11 +32,14 @@ let UsersSchema = new mongoose.Schema({
 
     ////New fields
 
-    profile_desc: String,
-    phone: String,
-    age: Number,
+    profile_desc: {
+        type: String
+    },
+
+    age: String,
     country: String,
-    gender: String
+    gender: String,
+    phone: String
 
 });
 
