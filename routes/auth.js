@@ -20,7 +20,10 @@ router.post('/forgot/password', authController.forGotPassword);
 router.get('/logout', authController.logout);
 
 // Passport.js Google auth routes
-router.get('/google', passport.authenticate('google', {session: false, scope: ['profile', 'email']}));
+router.get('/google', passport.authenticate('google', {
+    session: false,
+    scope: ['profile', 'email']
+}));
 router.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/login',
     scope: ['email', 'openid', 'profile'],
@@ -34,16 +37,25 @@ router.get('/google/callback', passport.authenticate('google', {
         last_name: user.last_name,
         email: user.email,
         id: user._id
-    }, 'secretkey', {expiresIn: '8h'}, {roles});
+    }, 'secretkey', {
+        expiresIn: '8h'
+    }, {
+        roles
+    });
     res.redirect(`${process.env.FRONTEND_URL}?token=${token}`);
 });
 
 router.get('/twitter',
-    passport.authenticate('twitter', {session: false}));
+    passport.authenticate('twitter', {
+        session: false
+    }));
 
 router.get('/twitter/callback',
-    passport.authenticate('twitter',
-        {failureRedirect: '/login', scope: ['email'], session: false}),
+    passport.authenticate('twitter', {
+        failureRedirect: '/login',
+        scope: ['email'],
+        session: false
+    }),
     (req, res) => {
         let user = req.user;
         let roles = req.user.roles;
@@ -53,19 +65,27 @@ router.get('/twitter/callback',
             last_name: user.last_name,
             email: user.email,
             id: user._id
-        }, 'secretkey', {expiresIn: '8h'}, {roles});
+        }, 'secretkey', {
+            expiresIn: '8h'
+        }, {
+            roles
+        });
         res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
     });
 
 
 // Passport.js Facebook auth routes
-router.get('/facebook', passport.authenticate('facebook', {session: false}));
+router.get('/facebook', passport.authenticate('facebook', {
+    session: false
+}));
 router.get('/facebook/callback', passport.authenticate('facebook', {
     failureRedirect: '/login',
     scope: ['email', 'openid', 'profile'],
     session: false
 }), (req, res) => {
-    let token = jwt.sign(req.user, 'secretkey', {expiresIn: '8h'});
+    let token = jwt.sign(req.user, 'secretkey', {
+        expiresIn: '8h'
+    });
     res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
 });
 
@@ -77,10 +97,15 @@ router.post('/facebook/token', passport.authenticate('facebook-token', {
     if (!req.user) {
         return res.send(401, 'User Not Authenticated');
     } else {
-        let token = jwt.sign({email: req.user.email}, 'secretkey', {expiresIn: '8h'});
-        res.json({token});
+        let token = jwt.sign({
+            email: req.user.email
+        }, 'secretkey', {
+            expiresIn: '8h'
+        });
+        res.json({
+            token
+        });
     }
 });
 
 module.exports = router;
-

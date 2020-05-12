@@ -12,6 +12,10 @@ app.use(cors(require('./config/cors')));
 // Body parser
 const bodyParser = require('body-parser');
 
+// Cookie Parser
+const cookie_parser = require('cookie-parser');
+app.use(cookie_parser());
+
 //Import the mongoose module
 const mongoose = require('mongoose');
 
@@ -83,7 +87,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/companies', require('./routes/companies'));
 
 //New Route
-app.use('/user_config', require('./routes/change_user_data'));
+app.use('/user_config', require('./routes/contact_information'));
 
 const path = require('path');
 

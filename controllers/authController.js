@@ -9,7 +9,6 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-
 const showIfErrors = require('../helpers/showIfErrors');
 
 
@@ -56,9 +55,9 @@ exports.login = async (req, res) => {
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
-                // res.cookie('token', jwt.sign(details, 'secretkey', {
-                //     expiresIn: '8h'
-                // }));
+                res.cookie('token', jwt.sign(details, 'secretkey', {
+                    expiresIn: '8h'
+                }));
 
                 res.status(200).json({
                     token: jwt.sign(details, 'secretkey', {
