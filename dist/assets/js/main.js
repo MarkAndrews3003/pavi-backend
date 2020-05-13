@@ -1,5 +1,39 @@
 $( document ).ready(function() {
-
+  // if($('.go-all-jobs').length) {
+  //   $(".go-all-jobs").click(function() {
+  //     console.log(545454);
+  //     $('.more-jobs-close').css('display', 'none');
+  //     $('.more-jobs-open').css('display', 'flex');
+  //     $('.back-all-jobs').css('display', 'block');
+  //     $(this).css('display', 'none');
+  //   });
+  // }
+  // if($('.back-all-jobs').length) {
+  //   $( ".back-all-jobs" ).click(function() {
+  //     $('.more-jobs-close').css('display', 'flex');
+  //     $('.more-jobs-open').css('display', 'none');
+  //     $('.more-jobs-open').css('display', 'block');
+  //     $(this).css('display', 'none');
+  //   });
+  // }
+  if($('.owl-carousel').length) {
+    $('.owl-carousel').owlCarousel({
+      loop:true,
+      margin:10,
+      nav:true,
+      responsive:{
+        0:{
+          items:1
+        },
+        480:{
+          items:2
+        },
+        1000:{
+          items:2
+        }
+      }
+    })
+  }
   if($('.profile-edit-profile-btn').length) {
     $( ".profile-edit-profile-btn" ).click(function() {
       $('.profile-save-btn').toggleClass('profile-save-btn-open');
@@ -47,8 +81,22 @@ $( document ).ready(function() {
       $('.profile-save-btn').toggleClass('profile-save-btn-open');
     });
   }
-
-
+  if($('.slider-round-right-1').length) {
+    $( ".slider-round-right-1" ).click(function() {
+      $('.find-job-block-info-1').css('display','none');
+      $('.find-job-block-info-2').css('display','flex');
+      $('.slider-round-1').css('display','none');
+      $('.slider-round-2').css('display','flex');
+    });
+  }
+  if($('.slider-round-right-2').length) {
+    $( ".slider-round-right-2" ).click(function() {
+      $('.find-job-block-info-1').css('display','flex');
+      $('.find-job-block-info-2').css('display','none');
+      $('.slider-round-1').css('display','flex');
+      $('.slider-round-2').css('display','none');
+    });
+  }
   if($('.glider').length) {
     new Glider(document.querySelector(".glider"), {
       slidesToShow: 1.5,
@@ -83,22 +131,6 @@ $( document ).ready(function() {
       ]
     });
   }
-  if($('.owl-carousel').length) {
-    $('.owl-carousel').owlCarousel({
-      loop:true,
-      margin:10,
-      nav:true,
-      responsive:{
-        0:{
-          items:1
-        },
-        480:{
-          items:2
-        },
-        1000:{
-          items:2
-        }
-      }
-    })
-  }
+
+
 });
