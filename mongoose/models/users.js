@@ -15,6 +15,9 @@ let UsersSchema = new mongoose.Schema({
     roles: [{
         type: String
     }],
+    avatar: {
+        type: String
+    },
     phone: {
         type: String
     },
@@ -39,7 +42,6 @@ let UsersSchema = new mongoose.Schema({
     age: String,
     country: String,
     gender: String,
-    phone: String
 
 });
 

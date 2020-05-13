@@ -23,8 +23,7 @@ const mongoose = require('mongoose');
 if (process.env.NODE_ENV === 'production') {
     console.log('connecting to mongo')
     const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
-    // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
-    // console.log(mongoDB)
+
     mongoose.connect(mongoDB, {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -34,20 +33,11 @@ if (process.env.NODE_ENV === 'production') {
     });
 } else {
 
-    console.log('Localhost');
     const mongoDB = 'mongodb://localhost:27017/pavi';
     mongoose.connect(mongoDB, {
         useNewUrlParser: true,
         useUnifiedTopology: true
     });
-
-    // const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
-    // const mongoDB = 'mongodb+srv://markandrews:davmark11@cluster0-avjzy.mongodb.net/pavi';
-    // console.log(mongoDB)
-    // mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true}, function (err) {
-    //     // console.log("Mongo error"+ err)
-    //     if (err) throw err;
-    // });
 }
 
 
@@ -85,6 +75,7 @@ app.use(session({
 // Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/companies', require('./routes/companies'));
+app.use('/users', require('./routes/users'));
 
 //New Route
 app.use('/user_config', require('./routes/contact_information'));

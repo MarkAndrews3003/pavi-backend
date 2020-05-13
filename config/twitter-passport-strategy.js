@@ -3,7 +3,6 @@ const TwitterStrategy = require('passport-twitter');
 
 // Strategy config
 module.exports = (passport) => {
-    console.log(`${process.env.API_URL}auth/twitter/callback`)
     passport.use(new TwitterStrategy({
             consumerKey: process.env.TWITTER_CONSUMER_KEY,
             consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
@@ -22,7 +21,6 @@ module.exports = (passport) => {
 
             }
             let newUser = await Users.findOne({email: profile._json.email}, {roles: 0});
-            console.log(newUser)
             done(null, newUser);
         }
     ));

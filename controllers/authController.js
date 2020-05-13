@@ -1,10 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 
-const sequelize = require('sequelize');
-const db = require('../models');
 const Users = require('../mongoose/models/users');
-// const Users = db.users;
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -18,20 +15,6 @@ exports.login = async (req, res) => {
         // Getting request data and setting user fields to return
         let data = req.body;
         let email = data.email.trim();
-
-
-        let attributes = [`first_name`, `last_name`, 'email', 'profile_img', 'password', 'id', 'status_id'];
-
-        // Active status selecting
-        let statusWhere = sequelize.where(sequelize.col('`users_status`.`name_en`'), 'active');
-
-
-        // // Selecting an employee that has an email matching request one
-        // let user = await Users.findOne({
-        //     attributes: attributes,
-        //     include: [],
-        //     where: {email: email} //userTypeWhere
-        // }, res);
 
         let user = await Users.findOne({
             'email': email
@@ -225,25 +208,3 @@ exports.forGotPassword = async (req, res) => {
     }
 }
 
-exports.uploadAvatar = async (req, res) => {
-    if(!req.file.filename){
-        return res.status(404).send('Not images')
-    }
-   let userUpdate = await Users.updateOne({_id: req.body.userId}, {avatar:req.file.filename})
-       .catch(err => {
-           console.log(err);
-           return res.status(500).send(err)
-       })
-    res.status(200).send('Avatar is changes')
-}
-
-exports.uploadCover = async (req, res) => {
-    if(!req.file.filename){
-        return res.status(404).send('Not images')
-    }
-    let userUpdate = await Users.updateOne({_id: req.body.userId}, {cover: req.file.filename})
-        .catch(err => {
-            return res.status(500).send(err)
-        })
-    res.status(200).send('Cover is changes')
-}
