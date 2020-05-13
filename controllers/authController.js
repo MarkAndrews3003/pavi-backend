@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
 
 
                 res.cookie('token', jwt.sign(details, 'secretkey', {
-                    expiresIn: '8h'
+                    expiresIn: '8h',
                 }));
 
                 res.status(200).json({
@@ -124,8 +124,8 @@ let makeid = (length) => {
 
 exports.forGotPasswordSendEmail = async (req, res) => {
     let user = await Users.findOne({
-        email: req.params.id
-    })
+            email: req.params.id
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -156,10 +156,10 @@ exports.forGotPasswordSendEmail = async (req, res) => {
             return res.status(500).send('mail no send')
         });
     let userUpdate = await Users.updateOne({
-        email: req.params.id
-    }, {
-        code: code
-    })
+            email: req.params.id
+        }, {
+            code: code
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -169,8 +169,8 @@ exports.forGotPasswordSendEmail = async (req, res) => {
 
 exports.forGotSms = async (req, res) => {
     let user = await Users.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -181,16 +181,16 @@ exports.forGotSms = async (req, res) => {
     let code = makeid(5)
 
     twilio.messages.create({
-        body: `Your code is ${code}`,
-        from: '+12057840405',
-        to: phone
-    })
+            body: `Your code is ${code}`,
+            from: '+12057840405',
+            to: phone
+        })
         .then(async phone => {
             let userUpdate = await Users.updateOne({
-                email: req.params.id
-            }, {
-                code: code
-            })
+                    email: req.params.id
+                }, {
+                    code: code
+                })
                 .catch(err => {
                     return res.status(500).send('Server Error')
                 })
@@ -204,8 +204,8 @@ exports.forGotSms = async (req, res) => {
 
 exports.forGotPassword = async (req, res) => {
     let user = await Users.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -226,22 +226,30 @@ exports.forGotPassword = async (req, res) => {
 }
 
 exports.uploadAvatar = async (req, res) => {
-    if(!req.file.filename){
+    if (!req.file.filename) {
         return res.status(404).send('Not images')
     }
-   let userUpdate = await Users.updateOne({_id: req.body.userId}, {avatar:req.file.filename})
-       .catch(err => {
-           console.log(err);
-           return res.status(500).send(err)
-       })
+    let userUpdate = await Users.updateOne({
+            _id: req.body.userId
+        }, {
+            avatar: req.file.filename
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send(err)
+        })
     res.status(200).send('Avatar is changes')
 }
 
 exports.uploadCover = async (req, res) => {
-    if(!req.file.filename){
+    if (!req.file.filename) {
         return res.status(404).send('Not images')
     }
-    let userUpdate = await Users.updateOne({_id: req.body.userId}, {cover: req.file.filename})
+    let userUpdate = await Users.updateOne({
+            _id: req.body.userId
+        }, {
+            cover: req.file.filename
+        })
         .catch(err => {
             return res.status(500).send(err)
         })
