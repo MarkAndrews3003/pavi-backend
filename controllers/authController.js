@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const sequelize = require('sequelize');
 const db = require('../models');
 const Users = require('../mongoose/models/users');
+const CV = require('../mongoose/models/CV_Portfolio');
 // const Users = db.users;
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
@@ -55,20 +56,24 @@ exports.login = async (req, res) => {
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
-                res.cookie('token', jwt.sign(details, 'secretkey', {
+                res.cookie('token', jwt.sign({
+                    user_id: details._id,
+                    email: details.email
+                }, 'secretkey', {
                     expiresIn: '8h',
                 }));
 
                 res.status(200).json({
-                    token: jwt.sign(details, 'secretkey', {
+                    token: jwt.sign({
+                        user_id: details._id,
+                        email: details.email
+                    }, 'secretkey', {
                         expiresIn: '8h'
                     }),
                     user_id: user.id,
                     full_name: full_name
                 })
             }
-
-
         }
     }
 
@@ -76,12 +81,14 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     req.logout();
+    res.clearCookie("token");
     res.status(200).json({
         msg: 'OK'
     })
 };
 
 exports.register = async (req, res) => {
+    console.log(req.body);
 
     let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
@@ -102,6 +109,17 @@ exports.register = async (req, res) => {
 
     let user = new Users(data);
     await user.save();
+
+    let cv = new CV({
+        user_id: user._id
+    });
+    await cv.save();
+
+    user.update({
+        CV_id: cv._id
+    }, function (err, doc) {
+        console.log(doc);
+    })
 
 
     // Saving the original password again to request for authenticating the user at once

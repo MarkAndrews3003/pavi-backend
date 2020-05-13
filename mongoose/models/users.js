@@ -36,10 +36,20 @@ let UsersSchema = new mongoose.Schema({
         type: String
     },
 
-    age: String,
-    country: String,
-    gender: String,
-    phone: String
+    age: {
+        type: String
+    },
+    country: {
+        type: String
+    },
+    gender: {
+        type: String
+    },
+
+    CV_id: {
+        type: mongoose.Types.ObjectId,
+        ref: 'CV'
+    }
 
 });
 
