@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
 
 
-const sequelize = require('sequelize');
-const db = require('../models');
 const Users = require('../mongoose/models/users');
 const CV = require('../mongoose/models/CV_Portfolio');
 // const Users = db.users;
@@ -19,20 +17,6 @@ exports.login = async (req, res) => {
         // Getting request data and setting user fields to return
         let data = req.body;
         let email = data.email.trim();
-
-
-        let attributes = [`first_name`, `last_name`, 'email', 'profile_img', 'password', 'id', 'status_id'];
-
-        // Active status selecting
-        let statusWhere = sequelize.where(sequelize.col('`users_status`.`name_en`'), 'active');
-
-
-        // // Selecting an employee that has an email matching request one
-        // let user = await Users.findOne({
-        //     attributes: attributes,
-        //     include: [],
-        //     where: {email: email} //userTypeWhere
-        // }, res);
 
         let user = await Users.findOne({
             'email': email
