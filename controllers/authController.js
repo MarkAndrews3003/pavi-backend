@@ -48,10 +48,7 @@ exports.login = async (req, res) => {
                 }));
 
                 res.status(200).json({
-                    token: jwt.sign({
-                        user_id: details._id,
-                        email: details.email
-                    }, 'secretkey', {
+                    token: jwt.sign(details, 'secretkey', {
                         expiresIn: '8h'
                     }),
                     user_id: user.id,
