@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 
 
 const Users = require('../mongoose/models/users');
+const CV = require('../mongoose/models/CV_Portfolio');
+// const Users = db.users;
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");
 const twilio = require('twilio')(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
@@ -38,20 +40,24 @@ exports.login = async (req, res) => {
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
-                res.cookie('token', jwt.sign(details, 'secretkey', {
-                    expiresIn: '8h'
+                res.cookie('token', jwt.sign({
+                    user_id: details._id,
+                    email: details.email
+                }, 'secretkey', {
+                    expiresIn: '8h',
                 }));
 
                 res.status(200).json({
-                    token: jwt.sign(details, 'secretkey', {
+                    token: jwt.sign({
+                        user_id: details._id,
+                        email: details.email
+                    }, 'secretkey', {
                         expiresIn: '8h'
                     }),
                     user_id: user.id,
                     full_name: full_name
                 })
             }
-
-
         }
     }
 
@@ -59,12 +65,14 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
     req.logout();
+    res.clearCookie("token");
     res.status(200).json({
         msg: 'OK'
     })
 };
 
 exports.register = async (req, res) => {
+    console.log(req.body);
 
     let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
@@ -85,6 +93,17 @@ exports.register = async (req, res) => {
 
     let user = new Users(data);
     await user.save();
+
+    let cv = new CV({
+        user_id: user._id
+    });
+    await cv.save();
+
+    user.update({
+        CV_id: cv._id
+    }, function (err, doc) {
+        console.log(doc);
+    })
 
 
     // Saving the original password again to request for authenticating the user at once
@@ -107,8 +126,8 @@ let makeid = (length) => {
 
 exports.forGotPasswordSendEmail = async (req, res) => {
     let user = await Users.findOne({
-        email: req.params.id
-    })
+            email: req.params.id
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -139,10 +158,10 @@ exports.forGotPasswordSendEmail = async (req, res) => {
             return res.status(500).send('mail no send')
         });
     let userUpdate = await Users.updateOne({
-        email: req.params.id
-    }, {
-        code: code
-    })
+            email: req.params.id
+        }, {
+            code: code
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -152,8 +171,8 @@ exports.forGotPasswordSendEmail = async (req, res) => {
 
 exports.forGotSms = async (req, res) => {
     let user = await Users.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -164,16 +183,16 @@ exports.forGotSms = async (req, res) => {
     let code = makeid(5)
 
     twilio.messages.create({
-        body: `Your code is ${code}`,
-        from: '+12057840405',
-        to: phone
-    })
+            body: `Your code is ${code}`,
+            from: '+12057840405',
+            to: phone
+        })
         .then(async phone => {
             let userUpdate = await Users.updateOne({
-                email: req.params.id
-            }, {
-                code: code
-            })
+                    email: req.params.id
+                }, {
+                    code: code
+                })
                 .catch(err => {
                     return res.status(500).send('Server Error')
                 })
@@ -187,8 +206,8 @@ exports.forGotSms = async (req, res) => {
 
 exports.forGotPassword = async (req, res) => {
     let user = await Users.findOne({
-        email: req.body.email
-    })
+            email: req.body.email
+        })
         .catch(err => {
             return res.status(500).send('Server Error')
         })
@@ -208,3 +227,33 @@ exports.forGotPassword = async (req, res) => {
     }
 }
 
+exports.uploadAvatar = async (req, res) => {
+    if (!req.file.filename) {
+        return res.status(404).send('Not images')
+    }
+    let userUpdate = await Users.updateOne({
+            _id: req.body.userId
+        }, {
+            avatar: req.file.filename
+        })
+        .catch(err => {
+            console.log(err);
+            return res.status(500).send(err)
+        })
+    res.status(200).send('Avatar is changes')
+}
+
+exports.uploadCover = async (req, res) => {
+    if (!req.file.filename) {
+        return res.status(404).send('Not images')
+    }
+    let userUpdate = await Users.updateOne({
+            _id: req.body.userId
+        }, {
+            cover: req.file.filename
+        })
+        .catch(err => {
+            return res.status(500).send(err)
+        })
+    res.status(200).send('Cover is changes')
+}

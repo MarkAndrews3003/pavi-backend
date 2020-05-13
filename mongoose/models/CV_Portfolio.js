@@ -2,17 +2,28 @@ let mongoose = require('mongoose');
 const moment = require('moment');
 
 let CVSchema = new mongoose.Schema({
-    work_exp: Object,
-    education: {
-        institution: String,
-        sart_date: String,
+    work_exp: [{
+        company: String,
+        start_date: String,
         end_date: String,
-        degree: String,
-        speciality: String
-    },
-    skills: Object,
+        position: String
+    }],
+    education: Array,
+    //[
+    // institution: String,
+    // start_date: String,
+    // end_date: String,
+    // degree: String,
+    // speciality: String
+    // ],
+    skills: [{
+        name: String,
+        percent: Number
+    }],
     links: Object,
-    user_id: String
+    user_id: {
+        type: mongoose.Types.ObjectId
+    }
 })
 
-module.exports = mongoose.model('CV', CVSchema);
+module.exports = mongoose.model('CV', CVSchema, 'CV');
