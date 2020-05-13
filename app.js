@@ -8,7 +8,7 @@ const cors = require('cors');
 
 // Cors
 app.use(cors(require('./config/cors')));
-
+app.use(express.static('uploads'));
 // Body parser
 const bodyParser = require('body-parser');
 

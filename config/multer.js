@@ -15,9 +15,16 @@ checkFileType = (file, cb) => {
 
 
 
-let uploadCover = multer.diskStorage({
+let uploadAvatar = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/avatar')
+        if (!fs.existsSync('uploads')) {
+            fs.mkdirSync('uploads');
+            fs.mkdirSync('uploads/avatars');
+        }
+        if(!fs.existsSync('uploads/avatars')){
+            fs.mkdirSync('uploads/avatars');
+        }
+        cb(null, 'uploads/avatars')
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + '.jpg')
@@ -26,7 +33,7 @@ let uploadCover = multer.diskStorage({
 
 
 exports.uploadAvatar = multer({
-    storage: uploadCover,
+    storage: uploadAvatar,
     limits: {fileSize: 1000000},
     fileFilter: function (req, file, cb) {
         checkFileType(file, cb);
@@ -36,7 +43,14 @@ exports.uploadAvatar = multer({
 
 let storageCover = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, 'uploads/cover')
+        if (!fs.existsSync('uploads')) {
+            fs.mkdirSync('uploads');
+            fs.mkdirSync('uploads/covers');
+        }
+        if(!fs.existsSync('uploads/covers')){
+            fs.mkdirSync('uploads/covers');
+        }
+        cb(null, 'uploads/covers')
     },
     filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now() + '.jpg')
