@@ -8,13 +8,16 @@ const cors = require('cors');
 
 // Cors
 app.use(cors(require('./config/cors')));
-app.use(express.static('uploads'));
+
 // Body parser
 const bodyParser = require('body-parser');
 
 // Cookie Parser
 const cookie_parser = require('cookie-parser');
 app.use(cookie_parser());
+
+// Static resources
+app.use('/uploads/', express.static('uploads/'));
 
 //Import the mongoose module
 const mongoose = require('mongoose');

@@ -18,6 +18,9 @@ let UsersSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
+    cover: {
+        type: String
+    },
     phone: {
         type: String
     },
