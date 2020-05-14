@@ -18,7 +18,7 @@ exports.change_pass = async (req, res, next) => {
             result: 'Incorrect old password'
         });
     })
-}
+};
 
 
 exports.change_email = async (req, res) => {
@@ -40,7 +40,7 @@ exports.change_email = async (req, res) => {
 
 exports.change_description = async (req, res) => {
     Users.findByIdAndUpdate(res.locals.id, {
-        profile_desc: req.body.new_desc
+        profile_desc: req.body.about_text
     }, function (err, user_result) {
         if (err) throw err;
         if (user_result != null) res.json({
@@ -48,7 +48,7 @@ exports.change_description = async (req, res) => {
         });
     })
 
-}
+};
 
 
 
@@ -61,7 +61,7 @@ exports.change_PACG = async (req, res) => {
             result: 'Try again'
         })
     })
-}
+};
 
 
 
