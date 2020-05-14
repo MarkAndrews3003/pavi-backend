@@ -32,7 +32,6 @@ const rules = [
         // return true;
     }),
 
-
 ];
 
 module.exports = {

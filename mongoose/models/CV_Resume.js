@@ -22,7 +22,7 @@ let CVSchema = new mongoose.Schema({
     }],
     links: Object,
     user_id: {
-        type: mongoose.Types.ObjectId
+        type: String
     }
 })
 
