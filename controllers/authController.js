@@ -41,11 +41,13 @@ exports.login = async (req, res) => {
 
 
                 res.cookie('token', jwt.sign({
-                    user_id: details._id,
+                    _id: details._id,
                     email: details.email
                 }, 'secretkey', {
                     expiresIn: '8h',
-                }));
+                }), {
+                    httpOnly: true
+                });
 
                 res.status(200).json({
                     token: jwt.sign(details, 'secretkey', {

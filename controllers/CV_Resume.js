@@ -9,7 +9,6 @@ const bcrypt = require('bcryptjs');
 
 
 exports.CV_education = async (req, res) => {
-
     var data = req.body;
     console.log(typeof (data));
     // var index = req.body.index;
@@ -81,26 +80,12 @@ exports.CV_education = async (req, res) => {
     // CV.findOneAndUpdate({user_id:res.locals.id},{},)
 
 
-    CV.findOneAndUpdate({
-        user_id: res.locals.id,
-    }, {
-        "education.$.end_date": '2017'
-    }, {
-        arrayFilters: {
-            index: 0
-        }
+    CV.findOne({
+        'user_id': res.locals.id
     }, function (err, doc) {
-        console.log(doc);
-
+        console.log(err);
+        console.log(doc.education);
     })
-
-
-
-
-
-
-
-
 
     // CV.find({
     //     user_id: res.locals.id,

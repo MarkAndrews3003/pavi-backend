@@ -50,7 +50,18 @@ exports.change_description = async (req, res) => {
 
 }
 
+exports.get_description = async (req, res) => {
+    Users.findById(res.locals.id, {
+            '_id': 0,
+            'profile_desc': 1
+        },
+        function (err, user_result) {
+            res.json({
+                result: user_result
+            })
+        })
 
+}
 
 exports.change_PACG = async (req, res) => {
     Users.findByIdAndUpdate(res.locals.id, req.body, function (err, user_result) {
@@ -63,6 +74,20 @@ exports.change_PACG = async (req, res) => {
     })
 }
 
+exports.get_PACG = async (req, res) => {
+    console.log(res.locals.id);
+    Users.findById(res.locals.id, {
+        '_id': 0,
+        'phone': 1,
+        'country': 1,
+        'age': 1,
+        'gender': 1
+    }, function (err, user_result) {
+        res.json({
+            result: user_result
+        })
+    })
+}
 
 
 exports.uploadAvatar = async (req, res) => {
