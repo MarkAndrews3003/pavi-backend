@@ -79,6 +79,7 @@ app.use(session({
 app.use('/auth', require('./routes/auth'));
 app.use('/companies', require('./routes/companies'));
 app.use('/users', require('./routes/users'));
+app.use('/jobs', require('./routes/jobs'));
 
 //New Route
 app.use('/CV', require('./routes/CVR'));
