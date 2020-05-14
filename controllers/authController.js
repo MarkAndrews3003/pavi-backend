@@ -40,12 +40,12 @@ exports.login = async (req, res) => {
                 let full_name = user[`first_name`] + ' ' + user[`last_name`];
 
 
-                res.cookie('token', jwt.sign({
-                    user_id: details._id,
-                    email: details.email
-                }, 'secretkey', {
-                    expiresIn: '8h',
-                }));
+                // res.cookie('token', jwt.sign({
+                //     user_id: details._id,
+                //     email: details.email
+                // }, 'secretkey', {
+                //     expiresIn: '8h',
+                // }));
 
                 res.status(200).json({
                     token: jwt.sign(details, 'secretkey', {
