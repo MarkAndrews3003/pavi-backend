@@ -10,7 +10,7 @@ router.post('/upload/avatar', upload.uploadAvatar.single('avatar'), usersControl
 router.post('/upload/cover', upload.uploadCover.single('cover'), usersController.uploadCover);
 
 //Fields: old_pass and new_pass
-router.post('/change_pass', defender, usersController.change_pass);
+router.put('/change_pass', defender, usersController.change_pass);
 
 //Fields: old_email and new_email
 router.post('/change_email', defender, usersController.change_email);
@@ -18,7 +18,7 @@ router.post('/change_email', defender, usersController.change_email);
 //Field: new_desc
 router.post('/change_description', defender, usersController.change_description);
 
-///Fields: phone,age,coutry and gender
-router.post('/change_PACG', defender, usersController.change_PACG);
+///Fields: phone,age,country and gender
+router.put('/change_PACG', defender, usersController.change_PACG);
 
 module.exports = router;
