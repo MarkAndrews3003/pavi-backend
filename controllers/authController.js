@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 
 const Users = require('../mongoose/models/users');
-const CV = require('../mongoose/models/CV_Portfolio');
+const CV = require('../mongoose/models/CV_Resume');
 // const Users = db.users;
 const bcrypt = require('bcryptjs');
 const nodemailer = require("nodemailer");

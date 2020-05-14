@@ -1,66 +1,11 @@
 const jwt = require('jsonwebtoken');
 const Users = require('../mongoose/models/users');
-const CV = require('../mongoose/models/CV_Portfolio');
+const CV = require('../mongoose/models/CV_Resume');
 const bcrypt = require('bcryptjs');
 
-exports.change_pass = async (req, res) => {
-    Users.findById(res.locals.id, function (err, user_result) {
-        if (bcrypt.compareSync(req.body.old_pass, result.password)) {
-            Users.findByIdAndUpdate(res.locals.id, {
-                password: bcrypt.hashSync(req.body.new_pass, 10)
-            }, function (err, user_result) {
-                if (err) throw err;
-                if (user_result != null) res.json({
-                    result: 'Password successfully changed'
-                })
-            })
-        } else res.json({
-            result: 'Incorrect old password'
-        });
-    })
-}
-
-
-exports.change_email = async (req, res) => {
-    Users.findOneAndUpdate({
-        email: req.body.old_email
-    }, {
-        email: req.body.new_email
-    }, function (err, user_result) {
-        if (err) throw err;
-        if (user_result == null) res.json({
-            result: 'Incorrect old email address'
-        });
-        else res.json({
-            result: 'Email address successfully changed'
-        })
-    })
-}
-
-exports.change_description = async (req, res, next) => {
-    Users.findByIdAndUpdate(res.locals.id, {
-        profile_desc: req.body.new_desc
-    }, function (err, user_result) {
-        if (err) throw err;
-        if (user_result != null) res.json({
-            result: 'Profile description successfully changed',
-        });
-    })
-
-}
 
 
 
-exports.change_PACG = async (req, res) => {
-    Users.findByIdAndUpdate(res.locals.id, req.body, function (err, user_result) {
-        if (user_result != null) res.json({
-            result: "Contact information successfully changed"
-        });
-        else res.json({
-            result: 'Try again'
-        })
-    })
-}
 
 
 exports.CV_education = async (req, res) => {

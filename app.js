@@ -81,7 +81,7 @@ app.use('/companies', require('./routes/companies'));
 app.use('/users', require('./routes/users'));
 
 //New Route
-app.use('/user_config', require('./routes/contact_information'));
+app.use('/CV', require('./routes/CVR'));
 
 const path = require('path');
 
