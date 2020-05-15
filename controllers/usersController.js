@@ -56,9 +56,7 @@ exports.get_description = async (req, res) => {
             'profile_desc': 1
         },
         function (err, user_result) {
-            res.json({
-                result: user_result
-            })
+            res.json(user_result)
         })
 
 }
