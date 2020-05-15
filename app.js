@@ -82,7 +82,7 @@ app.use('/users', require('./routes/users'));
 app.use('/jobs', require('./routes/jobs'));
 
 //New Route
-app.use('/CV', require('./routes/CVR'));
+app.use('/cv', require('./routes/CVR'));
 
 const path = require('path');
 
