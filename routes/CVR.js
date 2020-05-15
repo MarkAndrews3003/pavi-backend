@@ -2,7 +2,7 @@ var route = require('express').Router();
 
 var CVRE = require('../controllers/CV_Education'),
     CVRS = require('../controllers/CV_Skills'),
-    CVRW = require('../controllers/CV_work');
+    CVRW = require('../controllers/CV_Work');
 var defender = require('../config/token_validation').validation;
 
 
