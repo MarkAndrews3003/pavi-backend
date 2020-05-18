@@ -3,10 +3,18 @@ const moment = require('moment');
 
 let CompaniesSchema = new mongoose.Schema({
 
-    name: {type: String},
-    address: {type: String},
-    country: {type: String},
-    phone: {type: String},
+    name: {
+        type: String
+    },
+    address: {
+        type: String
+    },
+    country: {
+        type: String
+    },
+    phone: {
+        type: String
+    },
     status: {
         type: String,
         default: false

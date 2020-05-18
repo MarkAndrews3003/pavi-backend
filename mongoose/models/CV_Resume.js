@@ -10,8 +10,11 @@ let CVSchema = new mongoose.Schema({
     skill: {
         type: Array
     },
-    links: {
+    link: {
         type: Array
+    },
+    pdf_file: {
+        type: String
     },
     user_id: {
         type: String

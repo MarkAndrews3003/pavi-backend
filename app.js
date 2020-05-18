@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000; //3001->3000
 const server = require('http').createServer(app);
 const cors = require('cors');
 
@@ -18,6 +18,9 @@ app.use(cookie_parser());
 
 // Static resources
 app.use('/uploads/', express.static('uploads/'));
+
+app.use('/pdf', express.static('pdf/'));
+
 
 //Import the mongoose module
 const mongoose = require('mongoose');

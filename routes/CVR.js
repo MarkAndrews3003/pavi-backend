@@ -1,9 +1,13 @@
-var route = require('express').Router();
+const route = require('express').Router();
 
-var CVRE = require('../controllers/CV_Education'),
+const CVRE = require('../controllers/CV_Education'),
     CVRS = require('../controllers/CV_Skills'),
-    CVRW = require('../controllers/CV_Work');
-var defender = require('../config/token_validation').validation;
+    CVRW = require('../controllers/CV_Work'),
+    CVRL = require('../controllers/CV_Link');
+
+const defender = require('../config/token_validation').validation;
+const uploadPDF = require('../config/multer');
+
 
 
 
@@ -25,5 +29,18 @@ route.post('/work', defender, CVRW.work);
 route.get('/work_get', defender, CVRW.work_get);
 route.put('/work_update', defender, CVRW.work_update);
 route.delete('/work_delete', defender, CVRW.work_delete);
+
+//Fields: name, url
+route.post('/link', defender, CVRL.link);
+route.get('/link_get', defender, CVRL.link_get);
+route.put('/link_update', defender, CVRL.link_update);
+route.delete('/link_delete', defender, CVRL.link_delete);
+
+//
+route.post('/pdf', [defender, uploadPDF.uploadPDF.single('pdf_file')], function (req, res) {
+    res.json({
+        result: 'File successfully uploaded'
+    })
+})
 
 module.exports = route;
