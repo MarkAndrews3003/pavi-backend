@@ -100,7 +100,7 @@ app.use(express.static(dist));
 
 // Separating Angular routes
 app.get('*', (req, res, next) => {
-    if (!req.url.includes('phpmyadmin')) {
+    if (!req.url.includes('phpmyadmin') && !req.url.includes('uploads')) {
         res.sendFile(dist + 'index.html');
     }
 });
