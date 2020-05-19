@@ -36,16 +36,24 @@ exports.createJob = async (req, res) => {
 exports.filterJob = async (req, res) => {
     let filter = []
     if (req.body.jobTitle) {
-        filter.push({jobTitle: req.body.jobTitle})
+        filter.push({
+            jobTitle: req.body.jobTitle
+        })
     }
     if (req.body.experience) {
-        filter.push({experience: req.body.experience})
+        filter.push({
+            experience: req.body.experience
+        })
     }
     if (req.body.employment) {
-        filter.push({employment: req.body.employment})
+        filter.push({
+            employment: req.body.employment
+        })
     }
     console.log(filter);
-    let filterJob = await Jobs.find({$and: filter})
+    let filterJob = await Jobs.find({
+            $and: filter
+        })
         .catch(err => {
             return res.status.send(err)
         })

@@ -22,6 +22,7 @@ app.use('/uploads/', express.static('uploads/'));
 app.use('/pdf', express.static('pdf/'));
 
 
+
 //Import the mongoose module
 const mongoose = require('mongoose');
 
@@ -86,6 +87,7 @@ app.use('/jobs', require('./routes/jobs'));
 
 //New Route
 app.use('/cv', require('./routes/CVR'));
+app.use('/admin', require('./routes/admin'));
 
 const path = require('path');
 
