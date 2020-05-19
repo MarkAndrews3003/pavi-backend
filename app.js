@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 
-const port = process.env.PORT || 3000; //3001->3000
+const port = process.env.PORT || 3001; //3001->3000
 const server = require('http').createServer(app);
 const cors = require('cors');
 
@@ -102,7 +102,7 @@ app.use(express.static(dist));
 
 // Separating Angular routes
 app.get('*', (req, res, next) => {
-    if (!req.url.includes('phpmyadmin')) {
+    if (!req.url.includes('phpmyadmin') && !req.url.includes('uploads')) {
         res.sendFile(dist + 'index.html');
     }
 });
