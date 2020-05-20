@@ -1,5 +1,6 @@
 const user = require('../mongoose/models/users'),
-    job = require('../mongoose/models/jobs');
+    job = require('../mongoose/models/jobs'),
+    company = require('../mongoose/models/companies');
 
 const moment = require('moment');
 
@@ -10,32 +11,14 @@ const moment = require('moment');
 exports.job_list_filter = async (req, res) => {
 
     let data = req.body;
-    let country_list = new Array(),
-        city_list = new Array(),
-        filter = new Array();
+    let filter = new Array();
 
-    if (data.country) {
-        data.country.split(',').forEach(elem => {
-            country_list.push(new RegExp(elem, 'ig'));
-        });
+    if (data.jobTitle) regex(data.jobTitle, ' ', filter, 'jobTitle', 1);
+    if (data.country) regex(data.country, ',', filter, 'country', 1);
+    if (data.city) regex(data.city, ',', filter, 'city', 1);
+    if (data.email) regex(data.email, '', filter, 'email', 2);
+    if (data.employment) regex(data.employment, ',', filter, 'employment', 1);
 
-        filter.push({
-            country: {
-                $in: country_list
-            }
-        })
-    }
-
-    if (data.city) {
-        data.city.split(',').forEach(elem => {
-            city_list.push(new RegExp(elem, 'ig'));
-        });
-        filter.push({
-            city: {
-                $in: city_list
-            }
-        })
-    }
 
     if (data.min_salary || data.max_salary) {
         filter.push({
@@ -46,26 +29,47 @@ exports.job_list_filter = async (req, res) => {
         })
     }
 
-    if (data.min_date_open || data.max_date_open || data.min_date_close || data.max_date_close) {
+    if (data.min_date_open || data.max_date_open) {
 
+        //Input DD/MM/YYYYY
         let start_date_open = data.min_date_open.split('/'),
-            end_date_open = data.max_date_open.split('/'),
-            start_date_close = data.min_date_close.split('/'),
-            end_date_close = data.max_date_close.split('/');
+            end_date_open = data.max_date_open.split('/');
 
+        //Output YYYY/MM/DD
         filter.push({
             dateOpened: {
                 $gte: moment.utc().format(`${start_date_open[2]}-${start_date_open[1]}-${start_date_open[0]}`),
                 $lte: moment.utc().format(`${end_date_open[2]}-${end_date_open[1]}-${end_date_open[0]}`)
             },
-            dateClose: {
-                $gte: moment.utc().format(`${start_date_close[2]}-${start_date_close[1]}-${start_date_close[0]}`),
-                $lte: moment.utc().format(`${end_date_close[2]}-${end_date_close[1]}-${end_date_close[0]}`)
-            }
 
         })
     }
 
+    if (data.min_date_close || data.max_date_close) {
+
+        //Input DD/MM/YYYYY
+        let start_date_close = data.min_date_close.split('/'),
+            end_date_close = data.max_date_close.split('/');
+
+        //Output YYYY/MM/DD
+        filter.push({
+            dateClose: {
+                $gte: moment.utc().format(`${start_date_close[2]}-${start_date_close[1]}-${start_date_close[0]}`),
+                $lte: moment.utc().format(`${end_date_close[2]}-${end_date_close[1]}-${end_date_close[0]}`)
+            }
+        })
+    }
+
+    if (data.min_exp || data.max_exp) {
+
+        filter.push({
+            experience: {
+                $gte: data.min_exp,
+                $lte: data.max_exp
+            }
+
+        })
+    }
 
     let result, condition;
     if (filter.length != 0)
@@ -77,6 +81,8 @@ exports.job_list_filter = async (req, res) => {
     result = await job.find(condition, {
         '_id': 0,
         '__v': 0,
+    }).sort({
+        '_id': '-1'
     });
 
     res.json({
@@ -85,47 +91,20 @@ exports.job_list_filter = async (req, res) => {
 }
 
 
+
 /********************
  * USER LIST FILTER *
  ********************/
 
 exports.user_list_filter = async (req, res) => {
     let data = req.body;
-    let country_list = new Array(),
-        filter = new Array();
+    let filter = new Array();
 
-    if (data.gender) filter.push({
-        gender: new RegExp(`^${data.gender}$`, 'ig')
-    });
-
-    if (data.country) {
-        data.country.split(',').forEach(elem => {
-            country_list.push(new RegExp(elem, 'ig'));
-        });
-        filter.push({
-            country: {
-                $in: country_list
-            }
-        })
-    }
-
-    if (data.first_name) {
-        filter.push({
-            first_name: new RegExp(`^${data.first_name}$`, 'ig')
-        })
-    }
-
-    if (data.last_name) {
-        filter.push({
-            last_name: new RegExp(`^${data.last_name}$`, 'ig')
-        })
-    }
-
-    if (data.email) {
-        filter.push({
-            email: new RegExp(`^${data.email}$`, 'ig')
-        })
-    }
+    if (data.gender) regex(data.gender, ',', filter, 'gender', 2);
+    if (data.country) regex(data.country, ',', filter, 'country', 1);
+    if (data.first_name) regex(data.first_name, ',', filter, 'first_name', 2);
+    if (data.last_name) regex(data.last_name, ',', filter, 'last_name', 2);
+    if (data.email) regex(data.email, ',', filter, 'email', 2);
 
     let result, condition;
     if (filter.length != 0)
@@ -144,6 +123,8 @@ exports.user_list_filter = async (req, res) => {
         'profile_desc': 0,
         'avatar': 0,
         'roles': 0
+    }).sort({
+        '_id': '-1'
     });
 
     res.json({
@@ -152,9 +133,58 @@ exports.user_list_filter = async (req, res) => {
 
 }
 
+
+
 /***********************
  * COMPANY LIST FILTER *
  ***********************/
 exports.company_list_filter = async (req, res) => {
+    let data = req.body;
+    let filter = new Array();
 
+    if (data.name) regex(data.name, '', filter, 'name', 2);
+    if (data.country) regex(data.country, ',', filter, 'country', 1);
+    if (data.phone) regex(data.phone, '', filter, 'phone', 2);
+
+    let result, condition;
+    if (filter.length != 0)
+        condition = {
+            $and: filter
+        }
+
+
+    result = await company.find(condition, {
+        '_id': 0,
+        'created': 0,
+        '__v': 0,
+    }).sort({
+        '_id': '-1'
+    });
+
+    res.json({
+        result
+    });
+}
+
+
+
+//Regex function
+function regex(data, char, filter, field, type) {
+    switch (type) {
+        case 1:
+            let list = new Array();
+            data.split(char).forEach(elem => {
+                list.push(new RegExp(elem.replace(' ', ''), 'ig'));
+            });
+
+            return filter.push({
+                [field]: {
+                    $in: list
+                }
+            });
+        case 2:
+            return filter.push({
+                [field]: new RegExp(`^${data}$`, 'ig')
+            })
+    }
 }
