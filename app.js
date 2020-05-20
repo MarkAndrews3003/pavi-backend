@@ -28,7 +28,8 @@ const mongoose = require('mongoose');
 //Set up default mongoose connection
 if (process.env.NODE_ENV === 'production') {
     console.log('connecting to mongo')
-    const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
+const mongoDB = 'mongodb://localhost:27017/pavi';    
+//const mongoDB = 'mongodb://markandrews:davmark11@ds133922.mlab.com:33922/heroku_lk4qc5jc';
 
     mongoose.connect(mongoDB, {
         useNewUrlParser: true,
