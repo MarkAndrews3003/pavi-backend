@@ -4,7 +4,7 @@ const CV = require('../mongoose/models/CV_Resume');
 ////Education
 exports.education = async (req, res) => {
     var data = req.body;
-    console.log(typeof (data));
+    
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {

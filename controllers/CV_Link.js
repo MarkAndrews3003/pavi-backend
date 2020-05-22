@@ -16,7 +16,6 @@ exports.link = async (req, res) => {
             last_elem_index = new Number(user_result.link.slice(-1)[0].index.split('-')[1]) + 1;
         } else last_elem_index = 0;
 
-        console.log('Last index: ' + last_elem_index);
         data.index = res.locals.id + '-' + last_elem_index;
         user_result.link.push(data);
         user_result.save(function (err, doc) {
