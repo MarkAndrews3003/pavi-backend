@@ -4,13 +4,16 @@ const CV = require('../mongoose/models/CV_Resume');
 ////work
 exports.work = async (req, res) => {
     var data = req.body;
-    console.log(typeof (data));
+    console.log((data));
+    console.log(res.locals.id)
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
         if (err) res.json({
             result: 'Try again'
         })
+
+        console.log(user_result)
 
         let last_elem_index = null;
         if (user_result.work.length != 0) {
