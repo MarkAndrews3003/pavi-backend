@@ -14,9 +14,12 @@ exports.change_pass = async (req, res, next) => {
                     result: 'Password successfully changed'
                 })
             })
-        } else res.json({
-            result: 'Incorrect old password'
-        });
+        } else {
+            res.statusCode = 501;
+            res.json({
+                result: 'Incorrect old password'
+            });
+        }
     })
 };
 
@@ -28,10 +31,12 @@ exports.change_email = async (req, res) => {
         email: req.body.new_email
     }, function (err, user_result) {
         if (err) throw err;
-        if (user_result == null) res.json({
-            result: 'Incorrect old email address'
-        });
-        else res.json({
+        if (user_result == null) {
+            res.statusCode = 501;
+            res.json({
+                result: 'Incorrect old email address'
+            });
+        } else res.json({
             result: 'Email address successfully changed'
         })
     })
@@ -39,6 +44,7 @@ exports.change_email = async (req, res) => {
 
 
 exports.change_description = async (req, res) => {
+    console.log(res.locals.id);
     Users.findByIdAndUpdate(res.locals.id, {
         profile_desc: req.body.about_text
     }, function (err, user_result) {
@@ -51,10 +57,11 @@ exports.change_description = async (req, res) => {
 };
 
 exports.get_description = async (req, res) => {
+
     Users.findById(res.locals.id, {
-            '_id': 0,
-            'profile_desc': 1
-        },
+        '_id': 0,
+        'profile_desc': 1
+    },
         function (err, user_result) {
             res.json(user_result)
         })
@@ -92,12 +99,11 @@ exports.uploadAvatar = async (req, res) => {
     if (!req.file.filename) {
         return res.status(404).send('Not an image')
     }
-    // console.log(req.file)
     let userUpdate = await Users.updateOne({
-            _id: req.body.user_id
-        }, {
-            avatar: req.file.filename
-        })
+        _id: req.body.user_id
+    }, {
+        avatar: req.file.filename
+    })
         .catch(err => {
             return res.status(500).send(err)
         });
@@ -109,10 +115,10 @@ exports.uploadCover = async (req, res) => {
         return res.status(404).send('Not images')
     }
     let userUpdate = await Users.updateOne({
-            _id: req.body.user_id
-        }, {
-            cover: req.file.filename
-        })
+        _id: req.body.user_id
+    }, {
+        cover: req.file.filename
+    })
         .catch(err => {
             return res.status(500).send(err)
         });

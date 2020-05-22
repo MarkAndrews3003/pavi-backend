@@ -12,7 +12,7 @@ let JobsSchema = new mongoose.Schema({
         type: Date
     },
     experience: {
-        type: String
+        type: Number //past string
     },
     employment: {
         type: String

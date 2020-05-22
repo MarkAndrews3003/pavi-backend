@@ -3,6 +3,9 @@ const moment = require('moment');
 
 let UsersSchema = new mongoose.Schema({
 
+    companyId: {
+        type: mongoose.Types.ObjectId,
+    },
     first_name: {
         type: String
     },

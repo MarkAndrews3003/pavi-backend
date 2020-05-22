@@ -18,7 +18,6 @@ app.use(cookie_parser());
 
 // Static resources
 app.use('/uploads/', express.static('uploads/'));
-
 app.use('/pdf', express.static('pdf/'));
 
 
