@@ -19,7 +19,7 @@ exports.education = async (req, res) => {
             } else last_elem_index = 0;
 
             elem.index = res.locals.id + '-' + last_elem_index;
-            user_result.education.push(data);
+            user_result.education = data;
             user_result.save(function (err, doc) {
                 if (err) res.json({
                     result: 'Try again'
@@ -71,15 +71,14 @@ exports.education_get = async (req, res) => {
         for (var i = 0; i < user_result.education.length; i++) {
             education.push({
                 institution: data[i].institution,
-                start_end: data[i].start_date + '/' + data[i].end_date,
+                start_year: data[i].start_date,
+                end_year:  data[i].end_date,
                 degree: data[i].degree,
                 speciality: data[i].speciality,
                 index: data[i].index
             })
         }
-        res.json({
-            result: education
-        });
+        res.json(education);
     })
 }
 
