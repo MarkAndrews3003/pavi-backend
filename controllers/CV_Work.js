@@ -3,7 +3,10 @@ const CV = require('../mongoose/models/CV_Resume');
 
 ////work
 exports.work = async (req, res) => {
+    console.log(req.body);
     var data = req.body;
+    console.log(data.length);
+
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
@@ -12,24 +15,28 @@ exports.work = async (req, res) => {
         })
 
         let last_elem_index = null;
-        if (user_result.work.length != 0) {
-            last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
-        } else last_elem_index = 0;
-
-        data.index = res.locals.id + '-' + last_elem_index;
-        user_result.work.push(data);
-        user_result.save(function (err, doc) {
-            if (err) res.json({
-                result: 'Try again'
-            })
-            if (doc) res.json({
-                result: 'Data about work successfully saved',
-            })
-            else res.json({
-                result: 'Try again'
-            })
-
+        data.forEach(elem => {
+            if (user_result.work.length != 0) {
+                last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
+            } else last_elem_index = 0;
+            elem.index = res.locals.id + '-' + last_elem_index;
+            user_result.work.push(elem);
+            user_result.save(function (err, doc) {
+                if (err) res.json({
+                    result: 'Try again'
+                })
+                if (doc) res.json({
+                    result: 'Data about work successfully saved',
+                })
+                else res.json({
+                    result: 'Try again'
+                })
+            });
         });
+
+
+
+
     })
 }
 
