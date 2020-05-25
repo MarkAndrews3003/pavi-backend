@@ -7,6 +7,7 @@ exports.work = async (req, res) => {
     var data = req.body;
     console.log(data.length);
 
+
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
@@ -76,9 +77,7 @@ exports.work_get = async (req, res) => {
                 index: data[i].index
             })
         }
-        res.json({
-            result: work
-        });
+        res.json(work);
     })
 }
 
@@ -88,7 +87,7 @@ exports.work_delete = async (req, res) => {
     }, {
         $pull: {
             work: {
-                'index': req.body.index
+                'index': req.query.index
             }
         }
     }, function (err, user_data) {
