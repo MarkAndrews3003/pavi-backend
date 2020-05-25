@@ -71,7 +71,7 @@ require('./config/facebook-passport-strategy')(passport);
 require('./config/twitter-passport-strategy')(passport);
 app.use(passport.initialize({}));
 
-const session = require('express-session')
+const session = require('express-session');
 app.use(session({
     secret: 'cat',
     resave: false,
