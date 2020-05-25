@@ -23,6 +23,16 @@ exports.login = async (req, res) => {
         });
         console.log(email)
         console.log(user)
+
+        CV.findOne({ user_id: user._id }, function (err, res) {
+            if (!res) {
+                new CV({
+                    user_id: user._id
+                }).save();
+            }
+        });
+
+
         if (!res.headersSent) {
 
 
@@ -93,16 +103,7 @@ exports.register = async (req, res) => {
     let user = new Users(data);
     await user.save();
 
-    let cv = new CV({
-        user_id: user._id
-    });
-    await cv.save();
 
-    user.update({
-        CV_id: cv._id
-    }, function (err, doc) {
-        console.log(doc);
-    })
 
 
     // Saving the original password again to request for authenticating the user at once

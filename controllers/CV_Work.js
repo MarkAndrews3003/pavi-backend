@@ -15,10 +15,10 @@ exports.work = async (req, res) => {
         })
 
         let last_elem_index = null;
+        if (user_result.work.length != 0) {
+            last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
+        } else last_elem_index = 0;
         data.forEach(elem => {
-            if (user_result.work.length != 0) {
-                last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
-            } else last_elem_index = 0;
             elem.index = res.locals.id + '-' + last_elem_index;
             user_result.work.push(elem);
             user_result.save(function (err, doc) {
@@ -42,8 +42,8 @@ exports.work_update = async (req, res) => {
         'work.index': res.locals.id + '-' + data.index
     }, {
         'work.$.organization': data.organization,
-        'work.$.start_date': data.start_date,
-        'work.$.end_date': data.end_date,
+        'work.$.start_year': data.start_year,
+        'work.$.end_year': data.end_year,
         'work.$.role': data.role,
         'work.$.type': data.type
     }, function (err, user_data) {
@@ -69,7 +69,8 @@ exports.work_get = async (req, res) => {
         for (var i = 0; i < user_result.work.length; i++) {
             work.push({
                 organization: data[i].organizatiom,
-                start_end: data[i].start_date + '/' + data[i].end_date,
+                start_year: data[i].start_year,
+                end_year: data[i].end_year,
                 role: data[i].role,
                 type: data[i].type,
                 index: data[i].index
