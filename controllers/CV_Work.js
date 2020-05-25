@@ -39,12 +39,12 @@ exports.work = async (req, res) => {
 exports.work_update = async (req, res) => {
     var data = req.body;
     CV.update({
-        'work.index': res.locals.id + '-' + data.index
+        'work.index': data.index
     }, {
-        'work.$.organization': data.organization,
+        'work.$.company_name': data.company_name,
         'work.$.start_year': data.start_year,
         'work.$.end_year': data.end_year,
-        'work.$.role': data.role,
+        'work.$.speciality': data.speciality,
         'work.$.type': data.type
     }, function (err, user_data) {
         if (err) res.json({
@@ -68,11 +68,11 @@ exports.work_get = async (req, res) => {
         var data = user_result.work;
         for (var i = 0; i < user_result.work.length; i++) {
             work.push({
-                organization: data[i].organizatiom,
+                company_name: data[i].company_name,
                 start_year: data[i].start_year,
                 end_year: data[i].end_year,
-                role: data[i].role,
-                type: data[i].type,
+                speciality: data[i].speciality,
+                //type: data[i].type,
                 index: data[i].index
             })
         }
