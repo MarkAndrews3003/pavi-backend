@@ -54,13 +54,6 @@ let UsersSchema = new mongoose.Schema({
     gender: {
         type: String
     },
-
-    CV_id: {
-        type: mongoose.Types.ObjectId,
-        ref: 'CV'
-    }
-
-
 });
 
 module.exports = mongoose.model('Users', UsersSchema);
