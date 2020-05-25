@@ -1,10 +1,9 @@
 const CV = require('../mongoose/models/CV_Resume');
 
-
+const { check, validationResult } = require('express-validator');
 ////Education
 exports.education = async (req, res) => {
     var data = req.body;
-
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
@@ -46,8 +45,7 @@ exports.education_update = async (req, res) => {
         'education.$.start_date': data.start_date,
         'education.$.end_date': data.end_date,
         'education.$.degree': data.degree,
-        'education.$.speciality': data.speciality,
-        'education.$.certification': data.certification
+        'education.$.speciality': data.speciality
     }, function (err, user_data) {
         if (err) res.json({
             result: 'Try again'

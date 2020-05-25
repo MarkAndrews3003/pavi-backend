@@ -1,39 +1,48 @@
 const CV = require('../mongoose/models/CV_Resume');
 
-
+const { validationResult } = require('express-validator');
 ////work
 exports.work = async (req, res) => {
-    console.log(req.body);
-    var data = req.body;
-    console.log(data.length);
 
-    CV.findOne({
-        user_id: res.locals.id
-    }, function (err, user_result) {
-        if (err) res.json({
-            result: 'Try again'
-        })
+    var err = validationResult(req);
+    if (err.errors.length != 0) {
+        console.log(err.errors.length);
+        res.send(err.array()[0])
+    }
+    else {
+        let data = req.body;
+        CV.findOne({
+            user_id: res.locals.id
+        }, function (err, user_result) {
+            if (err) res.json({
+                result: 'Try again'
+            })
 
-        let last_elem_index = null;
-        if (user_result.work.length != 0) {
-            last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
-        } else last_elem_index = 0;
-        data.forEach(elem => {
-            elem.index = res.locals.id + '-' + last_elem_index;
-            user_result.work.push(elem);
-            user_result.save(function (err, doc) {
-                if (err) res.json({
-                    result: 'Try again'
-                })
-                if (doc) res.json({
-                    result: 'Data about work successfully saved',
-                })
-                else res.json({
-                    result: 'Try again'
-                })
+            let last_elem_index = null;
+            if (user_result.work.length != 0) {
+                last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
+            } else last_elem_index = 0;
+            data.forEach(elem => {
+                elem.index = res.locals.id + '-' + last_elem_index;
+                user_result.work.push(elem);
+                user_result.save(function (err, doc) {
+                    if (err) res.json({
+                        result: 'Try again'
+                    })
+                    if (doc) res.json({
+                        result: 'Data about work successfully saved',
+                    })
+                    else res.json({
+                        result: 'Try again'
+                    })
+                });
             });
-        });
-    })
+        })
+    }
+
+
+
+
 }
 
 exports.work_update = async (req, res) => {

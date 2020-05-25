@@ -1,4 +1,4 @@
-const {body} = require('express-validator');
+const { body } = require('express-validator');
 const Jobs = require('../mongoose/models/jobs');
 
 const rules = [

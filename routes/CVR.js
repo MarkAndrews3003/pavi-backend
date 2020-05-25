@@ -6,8 +6,8 @@ const CVRE = require('../controllers/CV_Education'),
     CVRL = require('../controllers/CV_Link');
 
 const defender = require('../config/token_validation').validation;
+const valid = require('../validators/CV');
 const uploadPDF = require('../config/multer');
-
 
 
 
@@ -19,13 +19,13 @@ route.put('/education_update', defender, CVRE.education_update);
 route.delete('/education_delete', defender, CVRE.education_delete);
 
 //Fields: name, percent, index (for update and delete only)
-route.post('/skill', defender, CVRS.skill);
+route.post('/skill', defender, CVRW.work);
 route.get('/skill_get', defender, CVRS.skill_get);
 route.put('/skill_update', defender, CVRS.skill_update);
 route.delete('/skill_delete', defender, CVRS.skill_delete);
 
 //Fields: organization,  start_date, end_date, role, type, index (for update and delete only)
-route.post('/work', defender, CVRW.work);
+route.post('/work', [valid.work_chack_list, defender], CVRW.work);
 route.get('/work_get', defender, CVRW.work_get);
 route.put('/work_update', defender, CVRW.work_update);
 route.delete('/work_delete', defender, CVRW.work_delete);

@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+
 exports.validation = async (req, res, next) => {
 
     const token = req.cookies.token
@@ -22,3 +23,4 @@ exports.validation = async (req, res, next) => {
             })
         } else res.status(401).send('Unauthorized');
 }
+
