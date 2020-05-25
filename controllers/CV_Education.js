@@ -4,7 +4,7 @@ const CV = require('../mongoose/models/CV_Resume');
 ////Education
 exports.education = async (req, res) => {
     var data = req.body;
-    
+
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
@@ -13,24 +13,27 @@ exports.education = async (req, res) => {
         })
 
         let last_elem_index = null;
-        if (user_result.education.length != 0) {
-            last_elem_index = new Number(user_result.education.slice(-1)[0].index.split('-')[1]) + 1;
-        } else last_elem_index = 0;
+        data.forEach(elem => {
+            if (user_result.education.length != 0) {
+                last_elem_index = new Number(user_result.education.slice(-1)[0].index.split('-')[1]) + 1;
+            } else last_elem_index = 0;
 
-        data.index = res.locals.id + '-' + last_elem_index;
-        user_result.education.push(data);
-        user_result.save(function (err, doc) {
-            if (err) res.json({
-                result: 'Try again'
-            })
-            if (doc) res.json({
-                result: 'Data about education successfully saved',
-            })
-            else res.json({
-                result: 'Try again'
-            })
+            elem.index = res.locals.id + '-' + last_elem_index;
+            user_result.education.push(data);
+            user_result.save(function (err, doc) {
+                if (err) res.json({
+                    result: 'Try again'
+                })
+                if (doc) res.json({
+                    result: 'Data about education successfully saved',
+                })
+                else res.json({
+                    result: 'Try again'
+                })
 
-        });
+            });
+        })
+
     })
 }
 

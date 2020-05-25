@@ -13,23 +13,26 @@ exports.skill = async (req, res) => {
         })
 
         let last_elem_index = null;
-        if (user_result.skill.length != 0) {
-            last_elem_index = new Number(user_result.skill.slice(-1)[0].index.split('-')[1]) + 1;
-        } else last_elem_index = 0;
+        data.forEach(elem => {
+            if (user_result.skill.length != 0) {
+                last_elem_index = new Number(user_result.skill.slice(-1)[0].index.split('-')[1]) + 1;
+            } else last_elem_index = 0;
 
-        data.index = res.locals.id + '-' + last_elem_index;
-        user_result.skill.push(data);
-        user_result.save(function (err, doc) {
-            if (err) res.json({
-                result: 'Try again'
-            })
-            if (doc) res.json({
-                result: 'Data about skill successfully saved',
-            })
-            else res.json({
-                result: 'Try again'
-            })
-        });
+            elem.index = res.locals.id + '-' + last_elem_index;
+            user_result.skill.push(data);
+            user_result.save(function (err, doc) {
+                if (err) res.json({
+                    result: 'Try again'
+                })
+                if (doc) res.json({
+                    result: 'Data about skill successfully saved',
+                })
+                else res.json({
+                    result: 'Try again'
+                })
+            });
+        })
+
     })
 }
 

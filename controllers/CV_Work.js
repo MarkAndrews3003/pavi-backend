@@ -33,10 +33,6 @@ exports.work = async (req, res) => {
                 })
             });
         });
-
-
-
-
     })
 }
 
