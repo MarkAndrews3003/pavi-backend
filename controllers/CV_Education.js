@@ -46,12 +46,13 @@ exports.education = async (req, res) => {
 
 exports.education_update = async (req, res) => {
     var data = req.body;
+    console.log(req.body)
     CV.update({
         'education.index': data.index
     }, {
         'education.$.institution': data.institution,
-        'education.$.start_year': data.start_date,
-        'education.$.end_year': data.end_date,
+        'education.$.start_year': data.start_year,
+        'education.$.end_year': data.end_year,
         'education.$.degree': data.degree,
         'education.$.speciality': data.speciality
     }, function (err, user_data) {
@@ -77,8 +78,8 @@ exports.education_get = async (req, res) => {
         for (var i = 0; i < user_result.education.length; i++) {
             education.push({
                 institution: data[i].institution,
-                start_year: data[i].start_date,
-                end_year: data[i].end_date,
+                start_year: data[i].start_year,
+                end_year: data[i].end_year,
                 degree: data[i].degree,
                 speciality: data[i].speciality,
                 index: data[i].index
@@ -95,7 +96,7 @@ exports.education_delete = async (req, res) => {
     }, {
         $pull: {
             education: {
-                'index': req.body.index
+                'index': req.query.index
             }
         }
     }, function (err, user_data) {

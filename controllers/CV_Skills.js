@@ -80,13 +80,11 @@ exports.skill_get = async (req, res) => {
         for (var i = 0; i < user_result.skill.length; i++) {
             skill.push({
                 name: data[i].name,
-                percent: data[i].percent,
+                rating: data[i].rating,
                 index: data[i].index
             })
         }
-        res.json({
-            result: skill
-        });
+        res.json(skill);
     })
 }
 
@@ -96,7 +94,7 @@ exports.skill_delete = async (req, res) => {
     }, {
         $pull: {
             skill: {
-                'index': req.body.index
+                'index': req.query.index
             }
         }
     }, function (err, user_data) {
