@@ -4,6 +4,7 @@ const CV = require('../mongoose/models/CV_Resume');
 ////skill
 exports.skill = async (req, res) => {
     var data = req.body;
+    console.log(data)
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
@@ -19,7 +20,7 @@ exports.skill = async (req, res) => {
             } else last_elem_index = 0;
 
             elem.index = res.locals.id + '-' + last_elem_index;
-            user_result.skill.push(data);
+            user_result.skill.push(elem);
             user_result.save(function (err, doc) {
                 if (err) res.json({
                     result: 'Try again'
@@ -42,7 +43,7 @@ exports.skill_update = async (req, res) => {
         'skill.index': data.index
     }, {
         'skill.$.name': data.name,
-        'skill.$.percent': data.percent,
+        'skill.$.rating': data.rating,
     }, function (err, user_data) {
         if (err) res.json({
             result: 'Try again'
@@ -55,7 +56,7 @@ exports.skill_update = async (req, res) => {
         })
     })
 
-}
+};
 
 exports.skill_get = async (req, res) => {
     let skill = new Array;
@@ -66,13 +67,11 @@ exports.skill_get = async (req, res) => {
         for (var i = 0; i < user_result.skill.length; i++) {
             skill.push({
                 name: data[i].name,
-                percent: data[i].percent,
+                rating: data[i].rating,
                 index: data[i].index
             })
         }
-        res.json({
-            result: skill
-        });
+        res.json(skill);
     })
 }
 
@@ -82,7 +81,7 @@ exports.skill_delete = async (req, res) => {
     }, {
         $pull: {
             skill: {
-                'index': req.body.index
+                'index': req.query.index
             }
         }
     }, function (err, user_data) {

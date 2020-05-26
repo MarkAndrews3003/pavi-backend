@@ -19,7 +19,7 @@ route.put('/education_update', defender, CVRE.education_update);
 route.delete('/education_delete', defender, CVRE.education_delete);
 
 //Fields: name, percent, index (for update and delete only)
-route.post('/skill', defender, CVRW.work);
+route.post('/skill', defender, CVRS.skill);
 route.get('/skill_get', defender, CVRS.skill_get);
 route.put('/skill_update', defender, CVRS.skill_update);
 route.delete('/skill_delete', defender, CVRS.skill_delete);
