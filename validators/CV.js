@@ -42,7 +42,7 @@ var education_up_check_list = [
 ]
 
 var certification_check_list = [
-    body('*.institution').not().isEmpty().withMessage('Institution name is required'),
+    body('*.name').not().isEmpty().withMessage('Institution name is required'),
     body('*.description').not().isEmpty().withMessage('Description is required'),
     body('*.issued_by').not().isEmpty().withMessage('Issued by is required'),
     body('*.start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
