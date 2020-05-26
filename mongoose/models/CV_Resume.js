@@ -10,6 +10,9 @@ let CVSchema = new mongoose.Schema({
     skill: {
         type: Array
     },
+    certification: {
+        type: Array
+    },
     link: {
         type: Array
     },

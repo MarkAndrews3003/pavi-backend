@@ -1,16 +1,17 @@
 const CV = require('../mongoose/models/CV_Resume');
 
 const { validationResult } = require('express-validator');
-////work
-exports.work = async (req, res) => {
 
+////certification
+exports.certification = async (req, res) => {
+    console.log(req.body);
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
         res.send(err.array()[0])
     }
     else {
-        let data = req.body;
+        var data = req.body;
         CV.findOne({
             user_id: res.locals.id
         }, function (err, user_result) {
@@ -19,29 +20,32 @@ exports.work = async (req, res) => {
             })
 
             let last_elem_index = null;
-            if (user_result.work.length != 0) {
-                last_elem_index = new Number(user_result.work.slice(-1)[0].index.split('-')[1]) + 1;
-            } else last_elem_index = 0;
             data.forEach(elem => {
+                if (user_result.certification.length != 0) {
+                    last_elem_index = new Number(user_result.certification.slice(-1)[0].index.split('-')[1]) + 1;
+                } else last_elem_index = 0;
+
                 elem.index = res.locals.id + '-' + last_elem_index;
-                user_result.work.push(elem);
+                user_result.certification.push(elem);
                 user_result.save(function (err, doc) {
                     if (err) res.json({
                         result: 'Try again'
                     })
                     if (doc) res.json({
-                        result: 'Data about work successfully saved',
+                        result: 'Data about certification successfully saved',
                     })
                     else res.json({
                         result: 'Try again'
                     })
+
                 });
-            });
+            })
+
         })
     }
 }
 
-exports.work_update = async (req, res) => {
+exports.certification_update = async (req, res) => {
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
@@ -50,19 +54,19 @@ exports.work_update = async (req, res) => {
     else {
         var data = req.body;
         CV.update({
-            'work.index': data.index
+            'certification.index': data.index
         }, {
-            'work.$.company_name': data.company_name,
-            'work.$.start_year': data.start_year,
-            'work.$.end_year': data.end_year,
-            'work.$.speciality': data.speciality,
-            'work.$.type': data.type
+            'certification.$.institution': data.institution,
+            'certification.$.start_year': data.start_year,
+            'certification.$.end_year': data.end_year,
+            'certification.$.description': data.description,
+            'certification.$.issued_by': data.issued_by
         }, function (err, user_data) {
             if (err) res.json({
                 result: 'Try again'
             })
             if (user_data) res.json({
-                result: 'Data about work successfully changed',
+                result: 'Data about certification successfully changed',
             })
             else res.json({
                 result: 'Try again'
@@ -71,33 +75,34 @@ exports.work_update = async (req, res) => {
     }
 }
 
-exports.work_get = async (req, res) => {
-    let work = new Array;
+exports.certification_get = async (req, res) => {
+    let certification = new Array;
     CV.findOne({
         user_id: res.locals.id
     }, function (err, user_result) {
-        var data = user_result.work;
-        for (var i = 0; i < user_result.work.length; i++) {
-            work.push({
-                company_name: data[i].company_name,
+        var data = user_result.certification;
+        for (var i = 0; i < user_result.certification.length; i++) {
+            certification.push({
+                institution: data[i].institution,
                 start_year: data[i].start_year,
                 end_year: data[i].end_year,
-                speciality: data[i].speciality,
-                //type: data[i].type,
+                description: data[i].description,
+                issued_by: data[i].issued_by,
                 index: data[i].index
             })
         }
-        res.json(work);
+        res.json(certification);
     })
 }
 
-exports.work_delete = async (req, res) => {
+exports.certification_delete = async (req, res) => {
+
     CV.update({
         'user_id': res.locals.id,
     }, {
         $pull: {
-            work: {
-                'index': req.query.index
+            certification: {
+                'index': req.body.index
             }
         }
     }, function (err, user_data) {
@@ -105,7 +110,7 @@ exports.work_delete = async (req, res) => {
             result: 'Try again'
         })
         if (user_data) res.json({
-            result: 'Data about work successfully deleted',
+            result: 'Data about certification successfully deleted',
         })
         else res.json({
             result: 'Try again'

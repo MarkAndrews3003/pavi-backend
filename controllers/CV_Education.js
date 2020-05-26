@@ -1,39 +1,47 @@
 const CV = require('../mongoose/models/CV_Resume');
 
-const { check, validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
+
 ////Education
 exports.education = async (req, res) => {
-    var data = req.body;
-    CV.findOne({
-        user_id: res.locals.id
-    }, function (err, user_result) {
-        if (err) res.json({
-            result: 'Try again'
+    var err = validationResult(req);
+    if (err.errors.length != 0) {
+        console.log(err.errors.length);
+        res.send(err.array()[0])
+    }
+    else {
+        var data = req.body;
+        CV.findOne({
+            user_id: res.locals.id
+        }, function (err, user_result) {
+            if (err) res.json({
+                result: 'Try again'
+            })
+
+            let last_elem_index = null;
+            data.forEach(elem => {
+                if (user_result.education.length != 0) {
+                    last_elem_index = new Number(user_result.education.slice(-1)[0].index.split('-')[1]) + 1;
+                } else last_elem_index = 0;
+
+                elem.index = res.locals.id + '-' + last_elem_index;
+                user_result.education.push(elem);
+                user_result.save(function (err, doc) {
+                    if (err) res.json({
+                        result: 'Try again'
+                    })
+                    if (doc) res.json({
+                        result: 'Data about education successfully saved',
+                    })
+                    else res.json({
+                        result: 'Try again'
+                    })
+
+                });
+            })
+
         })
-
-        let last_elem_index = null;
-        data.forEach(elem => {
-            if (user_result.education.length != 0) {
-                last_elem_index = new Number(user_result.education.slice(-1)[0].index.split('-')[1]) + 1;
-            } else last_elem_index = 0;
-
-            elem.index = res.locals.id + '-' + last_elem_index;
-            user_result.education.push(elem);
-            user_result.save(function (err, doc) {
-                if (err) res.json({
-                    result: 'Try again'
-                })
-                if (doc) res.json({
-                    result: 'Data about education successfully saved',
-                })
-                else res.json({
-                    result: 'Try again'
-                })
-
-            });
-        })
-
-    })
+    }
 }
 
 exports.education_update = async (req, res) => {
@@ -42,8 +50,8 @@ exports.education_update = async (req, res) => {
         'education.index': data.index
     }, {
         'education.$.institution': data.institution,
-        'education.$.start_date': data.start_date,
-        'education.$.end_date': data.end_date,
+        'education.$.start_year': data.start_date,
+        'education.$.end_year': data.end_date,
         'education.$.degree': data.degree,
         'education.$.speciality': data.speciality
     }, function (err, user_data) {
