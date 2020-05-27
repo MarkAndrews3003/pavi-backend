@@ -18,6 +18,9 @@ let UsersSchema = new mongoose.Schema({
     roles: [{
         type: String
     }],
+    birthday: {
+        type: String
+    },
     avatar: {
         type: String
     },
