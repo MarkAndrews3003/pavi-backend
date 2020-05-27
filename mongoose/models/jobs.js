@@ -23,6 +23,9 @@ let JobsSchema = new mongoose.Schema({
     dateClose: {
         type: Date
     },
+    candidate: {
+        type: Array
+    },
     jobCreateDate: {
         type: Date,
         default: moment().format()
