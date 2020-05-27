@@ -15,9 +15,8 @@ exports.change_pass = async (req, res, next) => {
                 })
             })
         } else {
-            res.statusCode = 501;
-            res.json({
-                result: 'Incorrect old password'
+            res.status(500).json({
+                msg: 'Incorrect old password'
             });
         }
     })
@@ -32,9 +31,8 @@ exports.change_email = async (req, res) => {
     }, function (err, user_result) {
         if (err) throw err;
         if (user_result == null) {
-            res.statusCode = 501;
-            res.json({
-                result: 'Incorrect old email address'
+            res.status(500).json({
+                msg: 'Incorrect old email address'
             });
         } else res.json({
             result: 'Email address successfully changed'
@@ -59,9 +57,9 @@ exports.change_description = async (req, res) => {
 exports.get_description = async (req, res) => {
 
     Users.findById(res.locals.id, {
-        '_id': 0,
-        'profile_desc': 1
-    },
+            '_id': 0,
+            'profile_desc': 1
+        },
         function (err, user_result) {
             res.json(user_result)
         })
