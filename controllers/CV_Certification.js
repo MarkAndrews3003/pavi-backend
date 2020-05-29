@@ -8,7 +8,7 @@ exports.certification = async (req, res) => {
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.send(err.array()[0])
+        res.status(500).send(err.array()[0])
     }
     else {
         var data = req.body;
@@ -49,14 +49,14 @@ exports.certification_update = async (req, res) => {
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.send(err.array()[0])
+        res.status(500).send(err.array()[0])
     }
     else {
         var data = req.body;
         CV.update({
             'certification.index': data.index
         }, {
-            'certification.$.institution': data.institution,
+            'certification.$.name': data.name,
             'certification.$.start_year': data.start_year,
             'certification.$.end_year': data.end_year,
             'certification.$.description': data.description,
@@ -83,7 +83,7 @@ exports.certification_get = async (req, res) => {
         var data = user_result.certification;
         for (var i = 0; i < user_result.certification.length; i++) {
             certification.push({
-                institution: data[i].institution,
+                name: data[i].name,
                 start_year: data[i].start_year,
                 end_year: data[i].end_year,
                 description: data[i].description,
@@ -102,7 +102,7 @@ exports.certification_delete = async (req, res) => {
     }, {
         $pull: {
             certification: {
-                'index': req.body.index
+                'index': req.query.index
             }
         }
     }, function (err, user_data) {

@@ -81,7 +81,6 @@ exports.logout = (req, res) => {
 };
 
 exports.register = async (req, res) => {
-    console.log(req.body);
 
     let data;
     let isCompanyReg = req.hasOwnProperty('userInfo');
@@ -98,12 +97,8 @@ exports.register = async (req, res) => {
     let originalPass = data.password;
     data.password = bcrypt.hashSync(originalPass, 10);
 
-    // await Users.create(data);
-
     let user = new Users(data);
     await user.save();
-
-
 
 
     // Saving the original password again to request for authenticating the user at once

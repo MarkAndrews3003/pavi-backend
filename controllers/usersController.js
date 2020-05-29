@@ -27,16 +27,15 @@ exports.change_pass = async (req, res, next) => {
         if (bcrypt.compareSync(req.body.old_pass, user_result.password)) {
             Users.findByIdAndUpdate(res.locals.id, {
                 password: bcrypt.hashSync(req.body.new_pass, 10)
-            }, function (err, user_result) {
+            }, async (err, user_result) => {
                 if (err) throw err;
-                if (user_result != null) res.json({
-                    result: 'Password successfully changed'
-                })
+                if (user_result != null) {
+                    await changeJwt(req, res)
+                }
             })
         } else {
-            res.statusCode = 501;
-            res.json({
-                result: 'Incorrect old password'
+            res.status(500).json({
+                msg: 'Incorrect old password'
             });
         }
     })
@@ -48,16 +47,15 @@ exports.change_email = async (req, res) => {
         email: req.body.old_email
     }, {
         email: req.body.new_email
-    }, function (err, user_result) {
+    }, async (err, user_result) => {
         if (err) throw err;
         if (user_result == null) {
-            res.statusCode = 501;
-            res.json({
-                result: 'Incorrect old email address'
+            res.status(500).json({
+                msg: 'Incorrect old email address'
             });
-        } else res.json({
-            result: 'Email address successfully changed'
-        })
+        } else {
+            await changeJwt(req, res)
+        }
     })
 }
 
@@ -78,9 +76,9 @@ exports.change_description = async (req, res) => {
 exports.get_description = async (req, res) => {
 
     Users.findById(res.locals.id, {
-        '_id': 0,
-        'profile_desc': 1
-    },
+            '_id': 0,
+            'profile_desc': 1
+        },
         function (err, user_result) {
             res.json(user_result)
         })
@@ -88,15 +86,15 @@ exports.get_description = async (req, res) => {
 }
 
 exports.change_PACG = async (req, res) => {
-    Users.findByIdAndUpdate(res.locals.id, req.body, function (err, user_result) {
-        if (user_result != null) res.json({
-            result: "Contact information successfully changed"
-        });
-        else res.json({
+    Users.findByIdAndUpdate(res.locals.id, req.body, async (err, user) => {
+        if (user != null) {
+            await changeJwt(req, res)
+        } else res.status(500).json({
             result: 'Try again'
         })
     })
 };
+
 
 exports.get_PACG = async (req, res) => {
     console.log(res.locals.id);
@@ -149,6 +147,7 @@ let changeJwt = async (req, res) => {
     let user = await Users.findOne({
         _id: req.body.user_id
     });
+    console.log(req.body)
     let full_name = user[`first_name`] + ' ' + user[`last_name`];
     let {
         password,
