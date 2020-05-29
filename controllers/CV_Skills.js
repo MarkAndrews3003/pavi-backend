@@ -56,7 +56,7 @@ exports.skill_update = async (req, res) => {
             'skill.index': data.index
         }, {
             'skill.$.name': data.name,
-            'skill.$.percent': data.percent,
+            'skill.$.rating': data.rating,
         }, function (err, user_data) {
             if (err) res.json({
                 result: 'Try again'
