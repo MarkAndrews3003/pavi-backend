@@ -45,28 +45,34 @@ exports.education = async (req, res) => {
 }
 
 exports.education_update = async (req, res) => {
-    var data = req.body;
-    console.log(req.body)
-    CV.update({
-        'education.index': data.index
-    }, {
-        'education.$.institution': data.institution,
-        'education.$.start_year': data.start_year,
-        'education.$.end_year': data.end_year,
-        'education.$.degree': data.degree,
-        'education.$.speciality': data.speciality
-    }, function (err, user_data) {
-        if (err) res.json({
-            result: 'Try again'
+    var err = validationResult(req);
+    if (err.errors.length != 0) {
+        console.log(err.errors.length);
+        res.send(err.array()[0])
+    }
+    else {
+        var data = req.body;
+        console.log(req.body)
+        CV.update({
+            'education.index': data.index
+        }, {
+            'education.$.institution': data.institution,
+            'education.$.start_year': data.start_year,
+            'education.$.end_year': data.end_year,
+            'education.$.degree': data.degree,
+            'education.$.speciality': data.speciality
+        }, function (err, user_data) {
+            if (err) res.json({
+                result: 'Try again'
+            })
+            if (user_data) res.json({
+                result: 'Data about education successfully changed',
+            })
+            else res.json({
+                result: 'Try again'
+            })
         })
-        if (user_data) res.json({
-            result: 'Data about education successfully changed',
-        })
-        else res.json({
-            result: 'Try again'
-        })
-    })
-
+    }
 }
 
 exports.education_get = async (req, res) => {

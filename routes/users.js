@@ -22,4 +22,7 @@ router.get('/get_description', defender, usersController.get_description);
 ///Fields: phone,age,coutry and gender
 router.put('/change_PACG', defender, usersController.change_PACG);
 router.get('/get_PACG', defender, usersController.get_PACG);
+
+//video record
+router.post('/upload_video', usersController.uploadVideo);
 module.exports = router;

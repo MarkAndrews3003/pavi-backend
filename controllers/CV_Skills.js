@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 
 ////skill
 exports.skill = async (req, res) => {
+    console.log(req.body);
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
@@ -56,7 +57,7 @@ exports.skill_update = async (req, res) => {
             'skill.index': data.index
         }, {
             'skill.$.name': data.name,
-            'skill.$.percent': data.percent,
+            'skill.$.rating': data.rating,
         }, function (err, user_data) {
             if (err) res.json({
                 result: 'Try again'
