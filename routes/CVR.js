@@ -9,13 +9,10 @@ const defender = require('../config/token_validation').validation;
 const valid = require('../validators/CV');
 const uploadPDF = require('../config/multer');
 
-
-
-
 //Fields: institution,  start_date, end_date, degree, speciality, certification (true/false) index(for update and delete only)
 route.post('/education', [valid.education_check_list, defender], CVRE.education);
 route.get('/education_get', defender, CVRE.education_get);
-route.put('/education_update', [valid.education_check_list, defender], CVRE.education_update);
+route.put('/education_update', [valid.education_up_check_list, defender], CVRE.education_update);
 route.delete('/education_delete', defender, CVRE.education_delete);
 
 route.post('/certification', [valid.certification_check_list, defender], CVRC.certification);

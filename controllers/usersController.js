@@ -1,7 +1,26 @@
 const Users = require('../mongoose/models/users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const formidable = require('formidable');
+const fs = require('fs');
 
+exports.uploadVideo = async (req, res, next) => {
+    var form = new formidable.IncomingForm();
+    if (!fs.existsSync('./user_videos')) fs.mkdirSync('./user_videos');
+    form.keepExtensions = true;
+    form.multiples = false;
+    form.parse(req);
+
+    form.on('fileBegin', function (name, file) {
+
+        file.path = './user_videos/' + file.name;
+        res.send('File uploaded');
+    });
+
+    form.on('error', function (err) {
+        if (err) res.send('Try again');
+    })
+}
 
 exports.change_pass = async (req, res, next) => {
     Users.findById(res.locals.id, function (err, user_result) {

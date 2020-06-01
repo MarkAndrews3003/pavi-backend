@@ -17,7 +17,7 @@ var work_up_check_list = [
 
 var skill_check_list = [
     body('*.name').not().isEmpty().withMessage('Skill name is required'),
-    body('*.rating').not().isEmpty().withMessage('Percent is required').isNumeric({ gt: 100 }).withMessage('Please enter only digits.'),
+    body('*.rating').not().isEmpty().withMessage('Percent is required').isNumeric().withMessage('Please enter only digits.'),
 ]
 
 var skill_up_check_list = [

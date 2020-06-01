@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 
 ////skill
 exports.skill = async (req, res) => {
+    console.log(req.body);
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
