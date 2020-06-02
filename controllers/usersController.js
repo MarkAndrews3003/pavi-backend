@@ -161,3 +161,15 @@ let changeJwt = async (req, res) => {
         full_name: full_name
     })
 }
+
+
+exports.changePositionInfo = async (req, res) => {
+    const data = req.body;
+    console.log(data)
+    await Users.updateOne({
+        _id: data.user_id
+    }, {position: data.position}).catch(err => {
+        return res.status(500).send('Server Error')
+    });
+    await changeJwt(req, res)
+};

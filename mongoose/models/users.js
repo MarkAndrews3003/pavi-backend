@@ -33,6 +33,9 @@ let UsersSchema = new mongoose.Schema({
     password: {
         type: String
     },
+    position: {
+        type: String
+    },
     status: {
         type: String,
         default: false

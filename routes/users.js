@@ -25,4 +25,6 @@ router.get('/get_PACG', defender, usersController.get_PACG);
 
 //video record
 router.post('/upload_video', usersController.uploadVideo);
+// Change position info
+router.put('/change-position-info', defender, usersController.changePositionInfo);
 module.exports = router;
