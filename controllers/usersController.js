@@ -76,9 +76,9 @@ exports.change_description = async (req, res) => {
 exports.get_description = async (req, res) => {
 
     Users.findById(res.locals.id, {
-            '_id': 0,
-            'profile_desc': 1
-        },
+        '_id': 0,
+        'profile_desc': 1
+    },
         function (err, user_result) {
             res.json(user_result)
         })

@@ -3,11 +3,10 @@ const CV = require('../mongoose/models/CV_Resume');
 const { validationResult } = require('express-validator');
 ////work
 exports.work = async (req, res) => {
-
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.send(err.array()[0])
+        res.status(422).send(err.array()[0])
     }
     else {
         let data = req.body;
@@ -42,10 +41,11 @@ exports.work = async (req, res) => {
 }
 
 exports.work_update = async (req, res) => {
+    console.log(req.body);
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.send(err.array()[0])
+        res.status(422).send(err.array()[0])
     }
     else {
         var data = req.body;

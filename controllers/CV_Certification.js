@@ -8,7 +8,7 @@ exports.certification = async (req, res) => {
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.status(500).send(err.array()[0])
+        res.status(422).send(err.array()[0])
     }
     else {
         var data = req.body;
@@ -49,7 +49,7 @@ exports.certification_update = async (req, res) => {
     var err = validationResult(req);
     if (err.errors.length != 0) {
         console.log(err.errors.length);
-        res.status(500).send(err.array()[0])
+        res.status(422).send(err.array()[0])
     }
     else {
         var data = req.body;
