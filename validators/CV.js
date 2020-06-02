@@ -1,58 +1,58 @@
-const {body} = require('express-validator');
+const { body } = require('express-validator');
 
 
 var work_check_list = [
-    body('*.company_name').not().isEmpty().withMessage('Company name is required'),
-    body('*.speciality').not().isEmpty().withMessage('Speciality name is required'),
+    body('*.company_name').trim().not().isEmpty().withMessage('Company name is required'),
+    body('*.speciality').trim().not().isEmpty().withMessage('Speciality name is required'),
     body('*.start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('*.end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
 
 var work_up_check_list = [
-    body('company_name').not().isEmpty().withMessage('Company name is required'),
-    body('speciality').not().isEmpty().withMessage('Speciality name is required'),
+    body('company_name').trim().not().isEmpty().withMessage('Company name is required'),
+    body('speciality').trim().not().isEmpty().withMessage('Speciality name is required'),
     body('start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
 
 var skill_check_list = [
-    body('*.name').not().isEmpty().withMessage('Skill name is required'),
-    body('*.rating').not().isEmpty().withMessage('Percent is required').isNumeric().withMessage('Please enter only digits.'),
+    body('*.name').trim().not().isEmpty().withMessage('Skill name is required'),
+    body('*.rating').trim().not().isEmpty().withMessage('Percent is required').isNumeric().withMessage('Please enter only digits.'),
 ]
 
 var skill_up_check_list = [
-    body('name').not().isEmpty().withMessage('Skill name is required'),
-    body('rating').not().isEmpty().withMessage('Percent year is required').isNumeric().withMessage('Please enter only digits.'),
+    body('name').trim().not().isEmpty().withMessage('Skill name is required'),
+    body('rating').trim().not().isEmpty().withMessage('Percent year is required').isNumeric().withMessage('Please enter only digits.'),
 ]
 
 var education_check_list = [
-    body('*.institution').not().isEmpty().withMessage('Institution name is required'),
-    body('*.degree').not().isEmpty().withMessage('Degree name is required'),
-    body('*.speciality').not().isEmpty().withMessage('Speciality name is required'),
+    body('*.institution').trim().not().isEmpty().withMessage('Institution name is required'),
+    body('*.degree').trim().not().isEmpty().withMessage('Degree name is required'),
+    body('*.speciality').trim().not().isEmpty().withMessage('Speciality name is required'),
     body('*.start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('*.end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
 
 var education_up_check_list = [
-    body('institution').not().isEmpty().withMessage('Institution name is required'),
-    body('degree').not().isEmpty().withMessage('Degree name is required'),
-    body('speciality').not().isEmpty().withMessage('Speciality name is required'),
+    body('institution').trim().not().isEmpty().withMessage('Institution name is required'),
+    body('degree').trim().not().isEmpty().withMessage('Degree name is required'),
+    body('speciality').trim().not().isEmpty().withMessage('Speciality name is required'),
     body('start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
 
 var certification_check_list = [
-    body('*.name').not().isEmpty().withMessage('Certification name is required'),
-    body('*.description').not().isEmpty().withMessage('Description is required'),
-    body('*.issued_by').not().isEmpty().withMessage('Issued by is required'),
+    body('*.name').trim().not().isEmpty().withMessage('Certification name is required'),
+    body('*.description').trim().not().isEmpty().withMessage('Description is required'),
+    body('*.issued_by').trim().not().isEmpty().withMessage('Issued by is required'),
     body('*.start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('*.end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
 
 var certification_up_check_list = [
-    body('name').not().isEmpty().withMessage('Certification name is required'),
-    body('description').not().isEmpty().withMessage('Description is required'),
-    body('issued_by').not().isEmpty().withMessage('Issued by is required'),
+    body('name').trim().not().isEmpty().withMessage('Certification name is required'),
+    body('description').trim().not().isEmpty().withMessage('Description is required'),
+    body('issued_by').trim().not().isEmpty().withMessage('Issued by is required'),
     body('start_year').not().isEmpty().withMessage('Start year is required').isNumeric().withMessage('Please enter only digits.'),
     body('end_year').not().isEmpty().withMessage('End year is required').isNumeric().withMessage('Please enter only digits.')
 ]
