@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const formidable = require('formidable');
 const fs = require('fs');
+const moment = require('moment');
 
 exports.uploadVideo = async (req, res, next) => {
     var form = new formidable.IncomingForm();
@@ -76,9 +77,9 @@ exports.change_description = async (req, res) => {
 exports.get_description = async (req, res) => {
 
     Users.findById(res.locals.id, {
-        '_id': 0,
-        'profile_desc': 1
-    },
+            '_id': 0,
+            'profile_desc': 1
+        },
         function (err, user_result) {
             res.json(user_result)
         })
@@ -86,6 +87,8 @@ exports.get_description = async (req, res) => {
 }
 
 exports.change_PACG = async (req, res) => {
+    let data = req.body;
+    // data.birthday = moment(data.birthday).format('DD/MM/YYYY');
     Users.findByIdAndUpdate(res.locals.id, req.body, async (err, user) => {
         if (user != null) {
             await changeJwt(req, res)
@@ -147,7 +150,7 @@ let changeJwt = async (req, res) => {
     let user = await Users.findOne({
         _id: req.body.user_id
     });
-    console.log(req.body)
+    // console.log(req.body)
     let full_name = user[`first_name`] + ' ' + user[`last_name`];
     let {
         password,
