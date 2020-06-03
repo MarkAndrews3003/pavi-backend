@@ -87,8 +87,6 @@ exports.get_description = async (req, res) => {
 }
 
 exports.change_PACG = async (req, res) => {
-    let data = req.body;
-    // data.birthday = moment(data.birthday).format('DD/MM/YYYY');
     Users.findByIdAndUpdate(res.locals.id, req.body, async (err, user) => {
         if (user != null) {
             await changeJwt(req, res)
